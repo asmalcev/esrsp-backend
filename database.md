@@ -52,7 +52,7 @@ CREATE TABLE Student
 ```sql
 CREATE TABLE Flow
 (
-	Id SERIAL,
+	Id INT,
 	StudentGroupId INT,
 	PRIMARY KEY (Id, StudentGroupId),
 	FOREIGN KEY (StudentGroupId) REFERENCES StudentGroup (Id) ON DELETE CASCADE
@@ -100,3 +100,66 @@ CREATE TABLE AcademicPerformanceDate
 ```
 
 # Запросы
+Частые запросы:
+- расписание на две недели
+- список группы с успеваемостью ее студентов по конкретному предмету
+- список групп преподавателя
+
+Запросы средней редкости:
+- добавление мероприятия
+- добавление оценки
+
+Редкие запросы:
+- добавление списка групп и списков групп
+- добавление расписания
+
+## Добавление данных
+Добавление преподавателя
+```sql
+INSERT Teacher(FullName, Email) VALUES ('Дмитриев А.П.', 'dmitriev_ap@voenmeh.ru');
+```
+
+Добавление преподавателя-представителя деканата
+```sql
+INSERT Teacher(FullName, Email, IsAdmin) VALUES ('Дмитриев А.П.', 'dmitriev_ap@voenmeh.ru', true);
+```
+
+Добавление дисциплины
+```sql
+INSERT Discipline(Name) VALUES ('пр МЕТ.КРОСС.ТРАНСЛ.');
+```
+
+Добавление группы
+```sql
+INSERT StudentGroup(Name) VALUES ('И595');
+```
+
+Добавление студента
+```sql
+INSERT Student(FullName, RecordBook, StudentGroupId) VALUES ('Иванов И.И.', 'И59501', 1);
+```
+
+Добавление потока
+```sql
+INSERT Flow(Id, StudentGroupId) VALUES (1, 1);
+```
+
+Добавление занятия
+```sql
+INSERT Class(FlowId, TeacherId, DisciplineId, ClassNumber, ClassDay, Place) VALUES (1, 1, 1, 1, 1, '218*');
+```
+
+Добавление успеваемости студента
+```sql
+INSERT AcademicPerformance(StudentId, DisciplineId) VALUES (1, 1);
+```
+
+Добавление успеваемости в дату
+```sql
+INSERT AcademicPerformanceDate(AcademicPerformanceId, Date, AcademicPerformance) VALUES (1, '2022-05-13', '5');
+```
+
+
+## Получение данных
+
+## Обновление данных
