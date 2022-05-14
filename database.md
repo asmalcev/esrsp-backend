@@ -12,8 +12,8 @@ CREATE DATABASE esrsp_db;
 CREATE TABLE Teacher
 (
 	Id SERIAL PRIMARY KEY,
-	FullName CHAR(128) NOT NULL,
-	Email CHAR(128) NOT NULL,
+	FullName VARCHAR(128) NOT NULL,
+	Email VARCHAR(128) NOT NULL,
 	IsAdmin BOOL DEFAULT false
 );
 ```
@@ -23,7 +23,7 @@ CREATE TABLE Teacher
 CREATE TABLE Discipline
 (
 	Id SERIAL PRIMARY KEY,
-	Name CHAR(128) UNIQUE
+	Name VARCHAR(128) UNIQUE
 );
 ```
 
@@ -32,7 +32,7 @@ CREATE TABLE Discipline
 CREATE TABLE StudentGroup
 (
 	Id SERIAL PRIMARY KEY,
-	Name CHAR(16) UNIQUE
+	Name VARCHAR(16) UNIQUE
 );
 ```
 
@@ -41,8 +41,8 @@ CREATE TABLE StudentGroup
 CREATE TABLE Student
 (
 	Id SERIAL PRIMARY KEY,
-	FullName CHAR(128) NOT NULL,
-	RecordBook CHAR(16) UNIQUE,
+	FullName VARCHAR(128) NOT NULL,
+	RecordBook VARCHAR(16) UNIQUE,
 	StudentGroupId INT,
 	FOREIGN KEY (StudentGroupId) REFERENCES StudentGroup (Id) ON DELETE SET NULL
 );
@@ -69,7 +69,7 @@ CREATE TABLE Class
 	DisciplineId INT NOT NULL,
 	ClassNumber SMALLINT NOT NULL,
 	ClassDay SMALLINT NOT NULL,
-	Place CHAR(16) NOT NULL,
+	Place VARCHAR(16) NOT NULL,
 	FOREIGN KEY (TeacherId) REFERENCES Teacher (Id) ON DELETE CASCADE,
 	FOREIGN KEY (DisciplineId) REFERENCES Discipline (Id) ON DELETE CASCADE
 );
@@ -110,56 +110,51 @@ CREATE TABLE AcademicPerformanceDate
 - добавление оценки
 
 Редкие запросы:
-- добавление списка групп и списков групп
+- добавление группы
 - добавление расписания
 
 ## Добавление данных
 Добавление преподавателя
 ```sql
-INSERT Teacher(FullName, Email) VALUES ('Дмитриев А.П.', 'dmitriev_ap@voenmeh.ru');
+INSERT INTO Teacher(FullName, Email) VALUES ('Дмитриев А.П.', 'dmitriev_ap@voenmeh.ru');
 ```
 
 Добавление преподавателя-представителя деканата
 ```sql
-INSERT Teacher(FullName, Email, IsAdmin) VALUES ('Дмитриев А.П.', 'dmitriev_ap@voenmeh.ru', true);
+INSERT INTO Teacher(FullName, Email, IsAdmin) VALUES ('Дмитриев А.П.', 'dmitriev_ap@voenmeh.ru', true);
 ```
 
 Добавление дисциплины
 ```sql
-INSERT Discipline(Name) VALUES ('пр МЕТ.КРОСС.ТРАНСЛ.');
+INSERT INTO Discipline(Name) VALUES ('пр МЕТ.КРОСС.ТРАНСЛ.');
 ```
 
 Добавление группы
 ```sql
-INSERT StudentGroup(Name) VALUES ('И595');
+INSERT INTO StudentGroup(Name) VALUES ('И595');
 ```
 
 Добавление студента
 ```sql
-INSERT Student(FullName, RecordBook, StudentGroupId) VALUES ('Иванов И.И.', 'И59501', 1);
+INSERT INTO Student(FullName, RecordBook, StudentGroupId) VALUES ('Иванов И.И.', 'И59501', 1);
 ```
 
 Добавление потока
 ```sql
-INSERT Flow(Id, StudentGroupId) VALUES (1, 1);
+INSERT INTO Flow(Id, StudentGroupId) VALUES (1, 1);
 ```
 
 Добавление занятия
 ```sql
-INSERT Class(FlowId, TeacherId, DisciplineId, ClassNumber, ClassDay, Place) VALUES (1, 1, 1, 1, 1, '218*');
+INSERT INTO Class(FlowId, TeacherId, DisciplineId, ClassNumber, ClassDay, Place) VALUES (1, 1, 1, 1, 1, '218*');
 ```
 
 Добавление успеваемости студента
 ```sql
-INSERT AcademicPerformance(StudentId, DisciplineId) VALUES (1, 1);
+INSERT INTO AcademicPerformance(StudentId, DisciplineId) VALUES (1, 1);
 ```
 
 Добавление успеваемости в дату
 ```sql
-INSERT AcademicPerformanceDate(AcademicPerformanceId, Date, AcademicPerformance) VALUES (1, '2022-05-13', '5');
+INSERT INTO AcademicPerformanceDate(AcademicPerformanceId, Date, AcademicPerformance) VALUES (1, '2022-05-13', '5');
 ```
-
-
-## Получение данных
-
-## Обновление данных
