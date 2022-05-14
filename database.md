@@ -158,3 +158,17 @@ INSERT INTO AcademicPerformance(StudentId, DisciplineId) VALUES (1, 1);
 ```sql
 INSERT INTO AcademicPerformanceDate(AcademicPerformanceId, Date, AcademicPerformance) VALUES (1, '2022-05-13', '5');
 ```
+
+## Получение
+
+Получение списка групп преподавателя, отсортированного по id групп
+```sql
+select * from studentgroup
+where id in (
+	select studentgroupid from flow
+	where id in (
+		select flowid from class
+		where teacherid = 1
+	)
+) order by id;
+```
