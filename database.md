@@ -172,3 +172,62 @@ where id in (
 	)
 ) order by id;
 ```
+
+Получение расписания группы на две недели
+```sql
+select * from class
+where flowid in (
+	select id from flow
+	where studentgroupid = 1
+) order by classday, classnumber;
+```
+
+Получение расписания преподавателя на две недели
+```sql
+select * from class
+where teacherid = 1
+order by classday, classnumber;
+```
+
+Получение списка группы
+```sql
+select * from student
+where studentgroupid = 1
+order by fullname;
+```
+
+Получение списка дисциплин группы
+```sql
+select * from discipline
+where id in (
+	select disciplineid from class
+	where flowid in (
+		select id from flow
+		where studentgroupid = 1
+	)
+) order by id;
+```
+
+Получение списка дисциплин студента
+```sql
+select * from discipline
+where id in (
+	select disciplineid from class
+	where flowid in (
+		select id from flow
+		where studentgroupid = (select studentgroupid from student where id = 1)
+	)
+) order by id;
+```
+
+Получение списка групп преподавателя
+```sql
+select * from studentgroup
+where id in (
+	select studentgroupid from flow
+	where id in (
+		select flowid from class
+		where teacherid = 1
+	)
+) order by id;
+```
