@@ -5,6 +5,13 @@
 CREATE DATABASE esrsp_db;
 ```
 
+## Создание пользователя
+```sql
+create user esrsp_user with encrypted password 'POSTGRES_PASS';
+
+grant all privileges on database esrsp_db to esrsp_user;
+```
+
 ## Создание таблиц
 
 ### Преподаватель
