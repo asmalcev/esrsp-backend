@@ -182,11 +182,27 @@ where id in (
 
 Получение расписания группы на две недели
 ```sql
-select * from class
+select
+	D.name as discipline,
+	T.fullname as teacher,
+	(
+		select STRING_AGG(SG.name, ', ') from studentgroup as SG
+		where id in (
+			select studentgroupid from flow
+			where id = C.flowid
+		)
+	) as groups,
+	C.place,
+	C.classday,
+	C.classnumber
+from class as C
+join discipline as D on D.id = C.disciplineid
+join teacher as T on T.id = C.teacherid
 where flowid in (
 	select id from flow
 	where studentgroupid = 1
-) order by classday, classnumber;
+)
+order by C.classday, C.classnumber;
 ```
 
 Получение расписания преподавателя на две недели
