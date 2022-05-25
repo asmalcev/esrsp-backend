@@ -260,3 +260,12 @@ where id in (
 	)
 ) order by id;
 ```
+
+Получение названий группы и дисциплины
+```sql
+select
+	SG.name as groupname,
+	D.name as discipline
+from studentgroup as SG, discipline as D
+where SG.id = 1 and D.id = 1;
+```
