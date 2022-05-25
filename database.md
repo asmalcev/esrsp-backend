@@ -168,16 +168,19 @@ INSERT INTO AcademicPerformanceDate(AcademicPerformanceId, Date, AcademicPerform
 
 ## Получение
 
-Получение списка групп преподавателя, отсортированного по id групп
+Получение списка групп-предметов преподавателя, отсортированного по id дисциплин, групп
 ```sql
-select * from studentgroup
-where id in (
-	select studentgroupid from flow
-	where id in (
-		select flowid from class
-		where teacherid = 1
-	)
-) order by id;
+select distinct
+	D.name as discipline,
+	D.id as disciplineid,
+	SG.name as groupname,
+	SG.id as groupid
+from class as C
+join discipline as D on D.id = C.disciplineid
+right join flow as F on F.id = C.flowid
+join studentgroup as SG on F.studentgroupid = SG.id
+where teacherid = 3
+order by D.id, SG.id;
 ```
 
 Получение расписания группы на две недели
@@ -254,18 +257,6 @@ where id in (
 	where flowid in (
 		select id from flow
 		where studentgroupid = (select studentgroupid from student where id = 1)
-	)
-) order by id;
-```
-
-Получение списка групп преподавателя
-```sql
-select * from studentgroup
-where id in (
-	select studentgroupid from flow
-	where id in (
-		select flowid from class
-		where teacherid = 1
 	)
 ) order by id;
 ```
