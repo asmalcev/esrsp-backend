@@ -20,8 +20,7 @@ CREATE TABLE Teacher
 (
 	Id SERIAL PRIMARY KEY,
 	FullName VARCHAR(128) NOT NULL,
-	Email VARCHAR(128) NOT NULL,
-	IsAdmin BOOL DEFAULT false
+	Email VARCHAR(128) NOT NULL
 );
 ```
 
@@ -105,6 +104,23 @@ CREATE TABLE AcademicPerformanceDate
 	FOREIGN KEY (AcademicPerformanceId) REFERENCES AcademicPerformance (Id) ON DELETE CASCADE
 );
 ```
+
+### Аккаунты
+```sql
+create table Account
+(
+	Login VARCHAR(64) PRIMARY KEY,
+	Password VARCHAR(64) NOT NULL,
+	UserType INT DEFAULT 0,
+	UserId INT NOT NULL
+);
+```
+UserType:
+0 - teacher
+1 - teacher-admin
+В планах добавление 2 - student
+
+UserId - id учителя из таблицы teacher. Не связан через FOREIGN KEY, т.к. планируется добавление аккаунтов студентов
 
 # Запросы
 Частые запросы:

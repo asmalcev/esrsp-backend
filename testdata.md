@@ -150,3 +150,18 @@ VALUES
 (5, 4, 6, 4, 12, '312'),
 (6, 5, 10, 4, 12, '318');
 ```
+
+Account
+```sql
+INSERT INTO Account(Login, Password, UserId)
+VALUES
+('potapov_pa', 'uH9TZLLyBzhMPk8Nd5x8', 1),
+('fomin_ar', 'n9CmUBReqQc3TcnVU5cV', 2),
+('pestova_ag', 'uWHhY62KqGCZXsfnz5FM', 3),
+('martinova_ra', 'gVhq2hw2KFmNWN3Ts83b', 4),
+('muhina_mp', 'tGKh5VNPvjVKMdUN6K39', 5);
+
+INSERT INTO Account(Login, Password, UserId, UserType)
+VALUES
+('dmitriev_ap', 'DzpBnKEcPZprLKH787Pq', 6, 1);
+```
