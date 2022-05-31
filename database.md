@@ -179,7 +179,18 @@ INSERT INTO AcademicPerformance(StudentId, DisciplineId) VALUES (1, 1);
 
 Добавление успеваемости в дату
 ```sql
-INSERT INTO AcademicPerformanceDate(AcademicPerformanceId, Date, AcademicPerformance) VALUES (1, '2022-05-13', '5');
+INSERT INTO AcademicPerformanceDate(AcademicPerformanceId, Date, AcademicPerformance) VALUES (1, 'YYYY-MM-DD', '5');
+```
+
+Генерация успеваемости студентов
+```sql
+insert into AcademicPerformance(StudentId, DisciplineId)
+select distinct S.id, D.id from class as C
+join discipline as D on D.id = C.disciplineid
+right join flow as F on F.id = C.flowid
+join studentgroup as SG on F.studentgroupid = SG.id
+right join student as S on SG.id = S.studentgroupid
+order by S.id, D.id;
 ```
 
 ## Получение
@@ -272,7 +283,10 @@ where id in (
 	select disciplineid from class
 	where flowid in (
 		select id from flow
-		where studentgroupid = (select studentgroupid from student where id = 1)
+		where studentgroupid = (
+			select studentgroupid from student
+			where id = 1
+		)
 	)
 ) order by id;
 ```
