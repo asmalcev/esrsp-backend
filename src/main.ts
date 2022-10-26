@@ -14,7 +14,7 @@ async function bootstrap() {
 			secret: appConfig.getValue('SESSION_SECRET'),
 			resave: false,
 			saveUninitialized: false,
-		})
+		}),
 	);
 
 	await app.listen(3000);

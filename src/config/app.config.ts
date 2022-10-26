@@ -3,10 +3,7 @@ require('dotenv').config();
 class AppConfig {
 	private localEnv: Record<string, string> = {};
 
-	constructor(
-		env: Record<string, string>,
-		keys: string[],
-	) {
+	constructor(env: Record<string, string>, keys: string[]) {
 		for (const key of keys) {
 			if (!env[key]) {
 				throw new Error(`Configuration error - missing env.${key}`);
@@ -18,7 +15,7 @@ class AppConfig {
 	getValue(key: string): string {
 		return this.localEnv[key];
 	}
-};
+}
 
 export const appConfig = new AppConfig(process.env, [
 	'POSTGRES_USERNAME',
