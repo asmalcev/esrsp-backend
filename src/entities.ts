@@ -1,1 +1,3 @@
-export default [];
+import { User } from './users/entity/user';
+
+export default [User];

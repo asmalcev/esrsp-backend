@@ -1,19 +1,21 @@
-import { IsNotEmpty, IsEnum, IsInt, Min } from 'class-validator';
+import { IsEnum, IsInt, Min, IsOptional } from 'class-validator';
 
 import { AuthUserDto } from 'src/auth/dto/auth.dto';
 
 export enum UserRole {
-	STUDENT = 0,
-	TEACHER = 1,
-	ADMIN = 2
+	NOTaUSER = 0,
+	STUDENT = 1,
+	TEACHER = 2,
+	ADMIN = 3,
 }
 
 export class UserDto extends AuthUserDto {
-	@IsNotEmpty()
+	@IsOptional()
 	@IsEnum(UserRole)
 	role: UserRole;
 
+	@IsOptional()
 	@IsInt()
 	@Min(0)
-	roleid: number;
+	roleId: number;
 }
