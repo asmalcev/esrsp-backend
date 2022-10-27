@@ -5,14 +5,15 @@ import {
 	Get,
 	Param,
 	ParseIntPipe,
+	UseGuards,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-
+import { AuthGuard } from 'src/auth/auth.guard';
 import { UserDto, UserRole } from './dto/user.dto';
 import { User } from './entity/user';
 import { UsersService } from './users.service';
 
-type UserSignup = {
+type UserSignupResponse = {
 	msg: string;
 	userId: number;
 	username: string;
@@ -24,7 +25,7 @@ export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 
 	@Post('/signup')
-	async signup(@Body() userDto: UserDto): Promise<UserSignup> {
+	async signup(@Body() userDto: UserDto): Promise<UserSignupResponse> {
 		const saltOrRounds = 10;
 		const hashedPassword = await bcrypt.hash(userDto.password, saltOrRounds);
 
@@ -43,6 +44,7 @@ export class UsersController {
 	/*
 	 * Temporary Test Methods
 	 */
+	@UseGuards(AuthGuard)
 	@Get('/')
 	async getAll(): Promise<User[]> {
 		return this.usersService.getAllUsers();
