@@ -10,7 +10,6 @@ export class StudentDto {
 	@MaxLength(16)
 	recordBook: string;
 
-	@IsNotEmpty()
 	@IsInt()
 	@Min(0)
 	studentGroupId: number;

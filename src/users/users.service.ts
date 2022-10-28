@@ -1,7 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PartialUserDto, UserDto } from './dto/user.dto';
+import { UserDto } from './dto/user.dto';
 import { User } from './entity/user';
 
 const SelectFindOptions = {
@@ -29,21 +33,37 @@ export class UsersService {
 	}
 
 	async getUserById(id: number): Promise<User> {
-		return this.usersRepository.findOne({
+		const user = await this.usersRepository.findOne({
 			where: { id },
 			select: SelectFindOptions,
 		});
+
+		if (!user) {
+			throw new NotFoundException('user is not found');
+		}
+
+		return user;
 	}
 
 	async getUserByUsername(username: string): Promise<User> {
-		return this.usersRepository.findOne({ where: { username } });
+		const user = await this.usersRepository.findOne({ where: { username } });
+
+		if (!user) {
+			throw new NotFoundException('user is not found');
+		}
+
+		return user;
 	}
 
 	async getAllUsers(): Promise<User[]> {
 		return this.usersRepository.find({ select: SelectFindOptions });
 	}
 
-	async updateUser(id: number, userDto: PartialUserDto): Promise<void> {
-		this.usersRepository.update({ id: id }, userDto);
+	async updateUser(id: number, userDto: Partial<UserDto>): Promise<void> {
+		this.usersRepository.update({ id }, { ...userDto });
+	}
+
+	async removeUser(id: number): Promise<void> {
+		this.usersRepository.delete({ id });
 	}
 }

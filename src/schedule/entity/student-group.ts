@@ -17,10 +17,12 @@ export class StudentGroup {
 	@Column({ length: 16, unique: true })
 	name: string;
 
-	@OneToMany(() => Student, (student) => student.studentGroup)
+	@OneToMany(() => Student, (student) => student.studentGroup, {
+		nullable: true,
+	})
 	students: Student[];
 
-	@ManyToMany(() => Lesson)
+	@ManyToMany(() => Lesson, { nullable: true })
 	@JoinTable()
 	lessons: Lesson[];
 }

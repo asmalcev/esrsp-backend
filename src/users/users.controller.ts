@@ -7,18 +7,20 @@ import {
 	ParseIntPipe,
 	UseGuards,
 	Put,
+	Delete,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { WithMsg } from 'src/common-types';
 import { Roles } from 'src/roles/roles.guard';
-import { PartialUserDto, UserDto } from './dto/user.dto';
+import { UserDto } from './dto/user.dto';
 import { User } from './entity/user';
 import { UsersService } from './users.service';
 
 type UserSignupResponse = WithMsg & Omit<User, 'password'>;
 
 type UserUpdateResponse = WithMsg & {};
+type UserRemoveResponse = WithMsg & {};
 
 @Controller('users')
 export class UsersController {
@@ -29,7 +31,7 @@ export class UsersController {
 		const saltOrRounds = 10;
 		const hashedPassword = await bcrypt.hash(userDto.password, saltOrRounds);
 
-		const { password, ...result} = await this.usersService.createUser({
+		const { password, ...result } = await this.usersService.createUser({
 			...userDto,
 			password: hashedPassword,
 		});
@@ -41,10 +43,23 @@ export class UsersController {
 	}
 
 	@Put('/:id')
-	async updateUser(@Param('id', ParseIntPipe) id: number, @Body() userDto: PartialUserDto): Promise<UserUpdateResponse> {
+	async updateUser(
+		@Param('id', ParseIntPipe) id: number,
+		@Body() userDto: Partial<UserDto>,
+	): Promise<UserUpdateResponse> {
 		this.usersService.updateUser(id, userDto);
 		return {
-			msg: 'success'
+			msg: 'success',
+		};
+	}
+
+	@Delete('/:id')
+	async removeUser(
+		@Param('id', ParseIntPipe) id: number,
+	): Promise<UserRemoveResponse> {
+		this.usersService.removeUser(id);
+		return {
+			msg: 'success',
 		};
 	}
 
@@ -58,7 +73,7 @@ export class UsersController {
 	}
 
 	@Get('/:id')
-	@Roles('admin')
+	// @Roles('admin')
 	async getUserById(@Param('id', ParseIntPipe) id: number): Promise<User> {
 		return this.usersService.getUserById(id);
 	}

@@ -19,9 +19,13 @@ export class Student {
 	@Column({ length: 16, unique: true })
 	recordBook: string;
 
-	@ManyToOne(() => StudentGroup, (studentGroup) => studentGroup.students)
+	@ManyToOne(() => StudentGroup, (studentGroup) => studentGroup.students, {
+		nullable: true,
+	})
 	studentGroup: StudentGroup;
 
-	@OneToMany(() => Performance, (performance) => performance.student)
+	@OneToMany(() => Performance, (performance) => performance.student, {
+		nullable: true,
+	})
 	performance: Performance[];
 }

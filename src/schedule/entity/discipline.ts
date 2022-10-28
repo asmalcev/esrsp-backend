@@ -10,9 +10,11 @@ export class Discipline {
 	@Column()
 	name: string;
 
-	@OneToMany(() => Lesson, (lesson) => lesson.discipline)
+	@OneToMany(() => Lesson, (lesson) => lesson.discipline, { nullable: true })
 	lessons: Lesson[];
 
-	@OneToMany(() => Performance, (performance) => performance.discipline)
+	@OneToMany(() => Performance, (performance) => performance.discipline, {
+		nullable: true,
+	})
 	performance: Performance[];
 }
