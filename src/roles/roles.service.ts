@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ScheduleService } from 'src/schedule/schedule.service';
 import { Repository } from 'typeorm';
 import { StudentDto } from './dto/student.dto';
 import { TeacherDto } from './dto/teacher.dto';
@@ -13,12 +14,16 @@ export class RolesService {
 		private readonly studentRepository: Repository<Student>,
 		@InjectRepository(Teacher)
 		private readonly teacherRepository: Repository<Teacher>,
+		private readonly scheduleService: ScheduleService,
 	) {}
 
+	/*
+	 * Student
+	 */
 	async createStudent(studentDto: StudentDto): Promise<Student> {
 		if (studentDto.studentGroupId) {
 			const student = this.studentRepository.create({ ...studentDto });
-			// student.studentGroup =
+			student.studentGroup = await this.scheduleService.getStudentGroup(studentDto.studentGroupId);
 			return student;
 		}
 		return this.studentRepository.save({ ...studentDto });
@@ -45,6 +50,9 @@ export class RolesService {
 		this.studentRepository.delete({ id });
 	}
 
+	/*
+	 * Teacher
+	 */
 	async createTeacher(teacherDto: TeacherDto): Promise<Teacher> {
 		return this.teacherRepository.save({ ...teacherDto });
 	}

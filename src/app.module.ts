@@ -7,6 +7,7 @@ import { appConfig } from './config/app.config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
+import { ScheduleModule } from './schedule/schedule.module';
 
 @Module({
 	imports: [
@@ -23,6 +24,7 @@ import { RolesModule } from './roles/roles.module';
 		UsersModule,
 		AuthModule,
 		RolesModule,
+		ScheduleModule,
 	],
 	controllers: [],
 	providers: [],
