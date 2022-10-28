@@ -4,6 +4,12 @@ import { Repository } from 'typeorm';
 import { UserDto } from './dto/user.dto';
 import { User } from './entity/user';
 
+const SelectFindOptions = {
+	username: true,
+	role: true,
+	roleId: true,
+};
+
 @Injectable()
 export class UsersService {
 	constructor(
@@ -22,7 +28,10 @@ export class UsersService {
 	}
 
 	async getUserById(id: number): Promise<User> {
-		return this.usersRepository.findOne({ where: { id } });
+		return this.usersRepository.findOne({
+			where: { id },
+			select: SelectFindOptions,
+		});
 	}
 
 	async getUserByUsername(username: string): Promise<User> {
@@ -30,6 +39,6 @@ export class UsersService {
 	}
 
 	async getAllUsers(): Promise<User[]> {
-		return this.usersRepository.find();
+		return this.usersRepository.find({ select: SelectFindOptions });
 	}
 }
