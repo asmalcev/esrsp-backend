@@ -19,3 +19,5 @@ export class UserDto extends AuthUserDto {
 	@Min(0)
 	roleId: number;
 }
+
+export type PartialUserDto = Partial<UserDto>;

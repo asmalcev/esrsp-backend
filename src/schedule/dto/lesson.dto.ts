@@ -1,4 +1,11 @@
-import { IsArray, IsInt, IsNotEmpty, IsString, Max, Min } from "class-validator";
+import {
+	IsArray,
+	IsInt,
+	IsNotEmpty,
+	IsString,
+	Max,
+	Min,
+} from 'class-validator';
 
 export class LessonDto {
 	@IsNotEmpty()

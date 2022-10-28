@@ -1,6 +1,6 @@
-import { Student } from "src/roles/entity/student";
-import { Discipline } from "src/schedule/entity/discipline";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Student } from 'src/roles/entity/student';
+import { Discipline } from 'src/schedule/entity/discipline';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'performance' })
 export class Performance {

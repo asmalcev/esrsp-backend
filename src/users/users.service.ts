@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserDto } from './dto/user.dto';
+import { PartialUserDto, UserDto } from './dto/user.dto';
 import { User } from './entity/user';
 
 const SelectFindOptions = {
+	id: true,
 	username: true,
 	role: true,
 	roleId: true,
@@ -40,5 +41,9 @@ export class UsersService {
 
 	async getAllUsers(): Promise<User[]> {
 		return this.usersRepository.find({ select: SelectFindOptions });
+	}
+
+	async updateUser(id: number, userDto: PartialUserDto): Promise<void> {
+		this.usersRepository.update({ id: id }, userDto);
 	}
 }

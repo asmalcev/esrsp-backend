@@ -1,11 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { UserRole } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthUserDto } from './dto/auth.dto';
 
 export type ValidatedUser = {
-	userId: number;
+	id: number;
 	username: string;
+	role: UserRole;
+	roleId: number;
 };
 
 @Injectable()
@@ -31,9 +34,7 @@ export class AuthService {
 			throw new NotFoundException(NotFoundMsg);
 		}
 
-		return {
-			userId: user.id,
-			username: user.username,
-		};
+		const { password, ...other } = user;
+		return other;
 	}
 }

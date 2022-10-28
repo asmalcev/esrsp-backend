@@ -1,6 +1,13 @@
-import { Student } from "src/roles/entity/student";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Lesson } from "./lesson";
+import { Student } from 'src/roles/entity/student';
+import {
+	Column,
+	Entity,
+	JoinTable,
+	ManyToMany,
+	OneToMany,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Lesson } from './lesson';
 
 @Entity({ name: 'student-group' })
 export class StudentGroup {

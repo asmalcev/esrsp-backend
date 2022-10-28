@@ -6,19 +6,19 @@ import {
 	Param,
 	ParseIntPipe,
 	UseGuards,
+	Put,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { UserDto, UserRole } from './dto/user.dto';
+import { WithMsg } from 'src/common-types';
+import { Roles } from 'src/roles/roles.guard';
+import { PartialUserDto, UserDto } from './dto/user.dto';
 import { User } from './entity/user';
 import { UsersService } from './users.service';
 
-type UserSignupResponse = {
-	msg: string;
-	userId: number;
-	username: string;
-	userRole?: UserRole;
-};
+type UserSignupResponse = WithMsg & Omit<User, 'password'>;
+
+type UserUpdateResponse = WithMsg & {};
 
 @Controller('users')
 export class UsersController {
@@ -29,28 +29,36 @@ export class UsersController {
 		const saltOrRounds = 10;
 		const hashedPassword = await bcrypt.hash(userDto.password, saltOrRounds);
 
-		const result = await this.usersService.createUser({
+		const { password, ...result} = await this.usersService.createUser({
 			...userDto,
 			password: hashedPassword,
 		});
 
 		return {
 			msg: 'User successfully registered',
-			userId: result.id,
-			username: result.username,
+			...result,
+		};
+	}
+
+	@Put('/:id')
+	async updateUser(@Param('id', ParseIntPipe) id: number, @Body() userDto: PartialUserDto): Promise<UserUpdateResponse> {
+		this.usersService.updateUser(id, userDto);
+		return {
+			msg: 'success'
 		};
 	}
 
 	/*
 	 * Temporary Test Methods
 	 */
-	// @UseGuards(AuthGuard)
 	@Get('/')
+	@UseGuards(AuthGuard)
 	async getAll(): Promise<User[]> {
 		return this.usersService.getAllUsers();
 	}
 
 	@Get('/:id')
+	@Roles('admin')
 	async getUserById(@Param('id', ParseIntPipe) id: number): Promise<User> {
 		return this.usersService.getUserById(id);
 	}

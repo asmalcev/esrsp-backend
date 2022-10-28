@@ -1,4 +1,4 @@
-import { IsDate, IsInt, IsNotEmpty, Min } from "class-validator";
+import { IsDate, IsInt, IsNotEmpty, Min } from 'class-validator';
 
 export class PerformanceDto {
 	@IsNotEmpty()

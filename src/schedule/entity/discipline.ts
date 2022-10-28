@@ -1,6 +1,6 @@
-import { Performance } from "src/performance/entity/performance";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Lesson } from "./lesson";
+import { Performance } from 'src/performance/entity/performance';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Lesson } from './lesson';
 
 @Entity({ name: 'discipline' })
 export class Discipline {

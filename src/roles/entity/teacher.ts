@@ -1,5 +1,5 @@
-import { Lesson } from "src/schedule/entity/lesson";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Lesson } from 'src/schedule/entity/lesson';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'teacher' })
 export class Teacher {
