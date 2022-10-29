@@ -10,7 +10,7 @@ import {
 export class LessonDto {
 	@IsNotEmpty()
 	@IsArray()
-	studentGroupsId: number[];
+	studentGroupIds: number[];
 
 	@IsNotEmpty()
 	@IsInt()

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from 'src/schedule/schedule.module';
 import { Student } from './entity/student';
@@ -9,7 +9,7 @@ import { RolesService } from './roles.service';
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([Student, Teacher]),
-		ScheduleModule,
+		forwardRef(() => ScheduleModule),
 	],
 	controllers: [RolesController],
 	providers: [RolesService],

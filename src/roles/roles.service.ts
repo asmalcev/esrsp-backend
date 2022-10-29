@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	forwardRef,
+	Inject,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ScheduleService } from 'src/schedule/schedule.service';
 import { Repository } from 'typeorm';
@@ -14,6 +19,7 @@ export class RolesService {
 		private readonly studentRepository: Repository<Student>,
 		@InjectRepository(Teacher)
 		private readonly teacherRepository: Repository<Teacher>,
+		@Inject(forwardRef(() => ScheduleService))
 		private readonly scheduleService: ScheduleService,
 	) {}
 
@@ -22,9 +28,13 @@ export class RolesService {
 	 */
 	async createStudent(studentDto: StudentDto): Promise<Student> {
 		if (studentDto.studentGroupId) {
-			const student = this.studentRepository.create({ ...studentDto });
-			student.studentGroup = await this.scheduleService.getStudentGroup(studentDto.studentGroupId);
-			return student;
+			const studentGroup = await this.scheduleService.getStudentGroup(
+				studentDto.studentGroupId,
+			);
+			return this.studentRepository.save({
+				...studentDto,
+				studentGroup,
+			});
 		}
 		return this.studentRepository.save({ ...studentDto });
 	}
@@ -43,7 +53,20 @@ export class RolesService {
 		id: number,
 		studentDto: Partial<StudentDto>,
 	): Promise<void> {
-		this.studentRepository.update({ id }, { ...studentDto });
+		if (studentDto.studentGroupId) {
+			const studentGroup = await this.scheduleService.getStudentGroup(
+				studentDto.studentGroupId,
+			);
+			this.studentRepository.update(
+				{ id },
+				{
+					...studentDto,
+					studentGroup,
+				},
+			);
+		} else {
+			this.studentRepository.update({ id }, { ...studentDto });
+		}
 	}
 
 	async removeStudent(id: number): Promise<void> {

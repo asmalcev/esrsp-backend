@@ -1,5 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	forwardRef,
+	Inject,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Teacher } from 'src/roles/entity/teacher';
+import { RolesService } from 'src/roles/roles.service';
 import { Repository } from 'typeorm';
 import { DisciplineDto } from './dto/discipline.dto';
 import { LessonDto } from './dto/lesson.dto';
@@ -10,7 +17,6 @@ import { StudentGroup } from './entity/student-group';
 
 @Injectable()
 export class ScheduleService {
-
 	constructor(
 		@InjectRepository(StudentGroup)
 		private readonly studentGroupsRepository: Repository<StudentGroup>,
@@ -18,17 +24,23 @@ export class ScheduleService {
 		private readonly lessonsRepository: Repository<Lesson>,
 		@InjectRepository(Discipline)
 		private readonly disciplinesRepository: Repository<Discipline>,
+		@Inject(forwardRef(() => RolesService))
+		private readonly rolesService: RolesService,
 	) {}
 
 	/*
 	 * Student Group
 	 */
-	async createStudentGroup(studentGroupDto: StudentGroupDto): Promise<StudentGroup> {
+	async createStudentGroup(
+		studentGroupDto: StudentGroupDto,
+	): Promise<StudentGroup> {
 		return this.studentGroupsRepository.save({ ...studentGroupDto });
 	}
 
 	async getStudentGroup(id: number): Promise<StudentGroup> {
-		const studentGroup = this.studentGroupsRepository.findOne({ where: { id } });
+		const studentGroup = this.studentGroupsRepository.findOne({
+			where: { id },
+		});
 
 		if (!studentGroup) {
 			throw new NotFoundException('student group is not found');
@@ -51,8 +63,19 @@ export class ScheduleService {
 	/*
 	 * Lesson
 	 */
-	async createLesson(lessonDto: LessonDto): Promise<Lesson> {
-		return this.lessonsRepository.save({ ...lessonDto });
+	async createLesson(lessonDto: LessonDto): Promise<any> {
+		const studentGroups = await Promise.all(
+			lessonDto.studentGroupIds.map((id) => this.getStudentGroup(id)),
+		);
+		const discipline = await this.getDiscipline(lessonDto.disciplineId);
+		const teacher = await this.rolesService.getTeacher(lessonDto.teacherId);
+
+		return this.lessonsRepository.save({
+			...lessonDto,
+			studentGroups,
+			discipline,
+			teacher,
+		});
 	}
 
 	async getLesson(id: number): Promise<Lesson> {
@@ -65,11 +88,26 @@ export class ScheduleService {
 		return lesson;
 	}
 
-	async updateLesson(
-		id: number,
-		lessonDto: Partial<LessonDto>,
-	): Promise<void> {
-		this.lessonsRepository.update({ id }, { ...lessonDto });
+	async updateLesson(id: number, lessonDto: Partial<LessonDto>): Promise<void> {
+		const other: {
+			studentGroups?: StudentGroup[];
+			discipline?: Discipline;
+			teacher?: Teacher;
+		} = {};
+
+		if (lessonDto.studentGroupIds) {
+			other.studentGroups = await Promise.all(
+				lessonDto.studentGroupIds.map((id) => this.getStudentGroup(id)),
+			);
+		}
+		if (lessonDto.disciplineId) {
+			other.discipline = await this.getDiscipline(lessonDto.disciplineId);
+		}
+		if (lessonDto.teacherId) {
+			other.teacher = await this.rolesService.getTeacher(lessonDto.teacherId);
+		}
+
+		this.lessonsRepository.update({ id }, { ...lessonDto, ...other });
 	}
 
 	async removeLesson(id: number): Promise<void> {
