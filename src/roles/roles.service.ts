@@ -5,6 +5,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { StudentGroup } from 'src/schedule/entity/student-group';
 import { ScheduleService } from 'src/schedule/schedule.service';
 import { Repository } from 'typeorm';
 import { StudentDto } from './dto/student.dto';
@@ -27,16 +28,20 @@ export class RolesService {
 	 * Student
 	 */
 	async createStudent(studentDto: StudentDto): Promise<Student> {
+		const other: {
+			studentGroup?: StudentGroup;
+		} = {};
+
 		if (studentDto.studentGroupId) {
-			const studentGroup = await this.scheduleService.getStudentGroup(
+			other.studentGroup = await this.scheduleService.getStudentGroup(
 				studentDto.studentGroupId,
 			);
-			return this.studentRepository.save({
-				...studentDto,
-				studentGroup,
-			});
 		}
-		return this.studentRepository.save({ ...studentDto });
+
+		return this.studentRepository.save({
+			...studentDto,
+			...other,
+		});
 	}
 
 	async getStudent(id: number): Promise<Student> {
@@ -53,20 +58,23 @@ export class RolesService {
 		id: number,
 		studentDto: Partial<StudentDto>,
 	): Promise<void> {
+		const other: {
+			studentGroup?: StudentGroup;
+		} = {};
+
 		if (studentDto.studentGroupId) {
-			const studentGroup = await this.scheduleService.getStudentGroup(
+			other.studentGroup = await this.scheduleService.getStudentGroup(
 				studentDto.studentGroupId,
 			);
-			this.studentRepository.update(
-				{ id },
-				{
-					...studentDto,
-					studentGroup,
-				},
-			);
-		} else {
-			this.studentRepository.update({ id }, { ...studentDto });
 		}
+
+		this.studentRepository.update(
+			{ id },
+			{
+				...studentDto,
+				...other,
+			},
+		);
 	}
 
 	async removeStudent(id: number): Promise<void> {

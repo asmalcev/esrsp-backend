@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { PerformanceModule } from './performance/performance.module';
 
 @Module({
 	imports: [
@@ -25,6 +26,7 @@ import { ScheduleModule } from './schedule/schedule.module';
 		AuthModule,
 		RolesModule,
 		ScheduleModule,
+		PerformanceModule,
 	],
 	controllers: [],
 	providers: [],

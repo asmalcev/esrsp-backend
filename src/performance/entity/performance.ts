@@ -16,6 +16,6 @@ export class Performance {
 	@ManyToOne(() => Student, (student) => student.performance)
 	student: Student;
 
-	@ManyToOne(() => Discipline, (discipline) => discipline.performance)
+	@ManyToOne(() => Discipline)
 	discipline: Discipline;
 }
