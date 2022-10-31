@@ -19,7 +19,9 @@ export class Lesson {
 	@JoinTable()
 	studentGroups: StudentGroup[];
 
-	@ManyToOne(() => Teacher, (teacher) => teacher.lessons)
+	@ManyToOne(() => Teacher, (teacher) => teacher.lessons, {
+		nullable: true,
+	})
 	teacher: Teacher;
 
 	@ManyToOne(() => Discipline, (discipline) => discipline.lessons)

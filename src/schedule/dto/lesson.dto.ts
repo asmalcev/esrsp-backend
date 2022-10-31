@@ -12,7 +12,6 @@ export class LessonDto {
 	@IsArray()
 	studentGroupIds: number[];
 
-	@IsNotEmpty()
 	@IsInt()
 	teacherId: number;
 

@@ -81,6 +81,10 @@ export class RolesService {
 		this.studentRepository.delete({ id });
 	}
 
+	async removeAllStudents(): Promise<void> {
+		this.studentRepository.delete({});
+	}
+
 	/*
 	 * Teacher
 	 */
@@ -107,5 +111,9 @@ export class RolesService {
 
 	async removeTeacher(id: number): Promise<void> {
 		this.teacherRepository.delete({ id });
+	}
+
+	async removeAllTeachers(): Promise<void> {
+		this.teacherRepository.delete({});
 	}
 }

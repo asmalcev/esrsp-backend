@@ -12,4 +12,4 @@ export const getLessonNumber = (lessonTime: string): number => {
 		if (lessonTime.includes(lessonsTime[i])) return i + 1;
 	}
 	return 100;
-}
+};

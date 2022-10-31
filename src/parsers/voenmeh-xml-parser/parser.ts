@@ -10,13 +10,13 @@ const parseLecturers = (
 	lecturer: any,
 ): Parser.Teacher[] => {
 	if (lecturer instanceof Array) {
-		lecturer.forEach(
-			teacher => acc.teachers.add({
+		lecturer.forEach((teacher) =>
+			acc.teachers.add({
 				id: teacher['IdLecturer'],
 				name: teacher['ShortName'],
-			} as WithId)
+			} as WithId),
 		);
-		return lecturer.map(teacher => ({
+		return lecturer.map((teacher) => ({
 			id: teacher['IdLecturer'] as number,
 			name: teacher['ShortName'] as string,
 		}));
@@ -27,7 +27,7 @@ const parseLecturers = (
 		name: lecturer['ShortName'],
 	} as WithId);
 	return [lecturer['ShortName']];
-}
+};
 
 const parseDay = (
 	acc: Parser.Result<Set<string>, IdSet>,
@@ -39,7 +39,9 @@ const parseDay = (
 	}
 
 	for (const lesson of day) {
-		const teachers: Parser.Teacher[] = lesson['Lecturers'] ? parseLecturers(acc, lesson['Lecturers']['Lecturer']) : [{}];
+		const teachers: Parser.Teacher[] = lesson['Lecturers']
+			? parseLecturers(acc, lesson['Lecturers']['Lecturer'])
+			: [{}];
 		const discipline: string = lesson['Discipline'];
 		const place: string = lesson['Classroom'];
 		const groups: string[] = [groupName];
@@ -49,29 +51,25 @@ const parseDay = (
 		//   day number of the week +
 		//   7 if it's even week, else 0 +
 		//   1 because need number not index
-		const lessonDay: number = ruWeekDays.indexOf(lesson['DayTitle']) + lesson['WeekCode'] * 7 - 6;
+		const lessonDay: number =
+			ruWeekDays.indexOf(lesson['DayTitle']) + lesson['WeekCode'] * 7 - 6;
 
 		acc.disciplines.add(discipline);
 
 		acc.lessons.push(
-			...teachers.map(
-				teacher => ({
-					teacher,
-					discipline,
-					place,
-					groups,
-					lessonNumber,
-					lessonDay
-				})
-			)
+			...teachers.map((teacher) => ({
+				teacher,
+				discipline,
+				place,
+				groups,
+				lessonNumber,
+				lessonDay,
+			})),
 		);
 	}
-}
+};
 
-const parseGroup = (
-	acc: Parser.Result<Set<string>, IdSet>,
-	group: any
-) => {
+const parseGroup = (acc: Parser.Result<Set<string>, IdSet>, group: any) => {
 	const groupName: string = group['@_Number'];
 	acc.groups.add(groupName);
 
@@ -83,10 +81,10 @@ const parseGroup = (
 		days = [days];
 	}
 
-	days.forEach(day =>
-		parseDay(acc, day['GroupLessons']['Lesson'], groupName)
+	days.forEach((day) =>
+		parseDay(acc, day['GroupLessons']['Lesson'], groupName),
 	);
-}
+};
 
 export const parse = (xmlInput: string) => {
 	const options = {
@@ -102,7 +100,7 @@ export const parse = (xmlInput: string) => {
 		disciplines: new Set(),
 	};
 
-	timetable.Group.forEach(group => parseGroup(acc, group));
+	timetable.Group.forEach((group) => parseGroup(acc, group));
 
 	const result: Parser.Result<string[], Parser.Teacher[]> = {
 		lessons: acc.lessons,
@@ -112,4 +110,4 @@ export const parse = (xmlInput: string) => {
 	};
 
 	return result;
-}
+};

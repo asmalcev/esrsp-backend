@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { PerformanceModule } from './performance/performance.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
 	imports: [
@@ -27,6 +28,7 @@ import { PerformanceModule } from './performance/performance.module';
 		RolesModule,
 		ScheduleModule,
 		PerformanceModule,
+		UploadModule,
 	],
 	controllers: [],
 	providers: [],

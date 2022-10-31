@@ -13,9 +13,13 @@ export class Performance {
 	@Column()
 	date: Date;
 
-	@ManyToOne(() => Student, (student) => student.performance)
+	@ManyToOne(() => Student, (student) => student.performance, {
+		onDelete: 'CASCADE',
+	})
 	student: Student;
 
-	@ManyToOne(() => Discipline)
+	@ManyToOne(() => Discipline, {
+		onDelete: 'CASCADE',
+	})
 	discipline: Discipline;
 }

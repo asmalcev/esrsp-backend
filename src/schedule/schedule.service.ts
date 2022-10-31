@@ -60,6 +60,10 @@ export class ScheduleService {
 		this.studentGroupsRepository.delete({ id });
 	}
 
+	async removeAllStudentGroups(): Promise<void> {
+		this.studentGroupsRepository.delete({});
+	}
+
 	/*
 	 * Lesson
 	 */
@@ -114,6 +118,10 @@ export class ScheduleService {
 		this.lessonsRepository.delete({ id });
 	}
 
+	async removeAllLessons(): Promise<void> {
+		this.lessonsRepository.delete({});
+	}
+
 	/*
 	 * Discipline
 	 */
@@ -140,5 +148,9 @@ export class ScheduleService {
 
 	async removeDiscipline(id: number): Promise<void> {
 		this.disciplinesRepository.delete({ id });
+	}
+
+	async removeAllDisciplines(): Promise<void> {
+		this.disciplinesRepository.delete({});
 	}
 }
