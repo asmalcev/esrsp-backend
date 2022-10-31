@@ -1,17 +1,22 @@
 export namespace Parser {
+	export type Teacher = {
+		name?: string;
+		id?: number;
+	};
+
 	export type Lesson = {
 		discipline: string;
-		teacher: string;
+		teacher: Teacher;
 		groups: string[];
 		lessonNumber: number;
 		lessonDay: number;
 		place: string;
 	};
 
-	export type Result<T> = {
+	export type Result<T1, T2> = {
 		lessons: Lesson[];
-		groups: T;
-		teachers: T;
-		disciplines: T;
+		groups: T1;
+		teachers: T2;
+		disciplines: T1;
 	};
 }

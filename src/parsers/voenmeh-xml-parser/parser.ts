@@ -1,25 +1,36 @@
 import { XMLParser } from 'fast-xml-parser';
+import { WithId } from 'src/common-types';
+import { IdSet } from '../id-set';
 import { ruWeekDays } from '../parser-days';
 import { Parser } from '../parser-types';
 import { getLessonNumber } from './lessons-time';
 
 const parseLecturers = (
-	acc: Parser.Result<Set<string>>,
+	acc: Parser.Result<Set<string>, IdSet>,
 	lecturer: any,
-): string[] => {
+): Parser.Teacher[] => {
 	if (lecturer instanceof Array) {
 		lecturer.forEach(
-			teacher => acc.teachers.add( teacher['ShortName'] )
+			teacher => acc.teachers.add({
+				id: teacher['IdLecturer'],
+				name: teacher['ShortName'],
+			} as WithId)
 		);
-		return lecturer.map(teacher => teacher['ShortName']);
+		return lecturer.map(teacher => ({
+			id: teacher['IdLecturer'] as number,
+			name: teacher['ShortName'] as string,
+		}));
 	}
 
-	acc.teachers.add(lecturer['ShortName']);
+	acc.teachers.add({
+		id: lecturer['IdLecturer'],
+		name: lecturer['ShortName'],
+	} as WithId);
 	return [lecturer['ShortName']];
 }
 
 const parseDay = (
-	acc: Parser.Result<Set<string>>,
+	acc: Parser.Result<Set<string>, IdSet>,
 	day: any,
 	groupName: string,
 ) => {
@@ -28,7 +39,7 @@ const parseDay = (
 	}
 
 	for (const lesson of day) {
-		const teachers: string[] = lesson['Lecturers'] ? parseLecturers(acc, lesson['Lecturers']['Lecturer']) : [''];
+		const teachers: Parser.Teacher[] = lesson['Lecturers'] ? parseLecturers(acc, lesson['Lecturers']['Lecturer']) : [{}];
 		const discipline: string = lesson['Discipline'];
 		const place: string = lesson['Classroom'];
 		const groups: string[] = [groupName];
@@ -58,7 +69,7 @@ const parseDay = (
 }
 
 const parseGroup = (
-	acc: Parser.Result<Set<string>>,
+	acc: Parser.Result<Set<string>, IdSet>,
 	group: any
 ) => {
 	const groupName: string = group['@_Number'];
@@ -84,15 +95,21 @@ export const parse = (xmlInput: string) => {
 	const parser = new XMLParser(options);
 	const timetable = parser.parse(xmlInput).Timetable;
 
-	const result: Parser.Result<Set<string>> = {
+	const acc: Parser.Result<Set<string>, IdSet> = {
 		lessons: [],
-		teachers: new Set(),
+		teachers: new IdSet(),
 		groups: new Set(),
 		disciplines: new Set(),
 	};
 
-	timetable.Group.forEach(group => parseGroup(result, group));
+	timetable.Group.forEach(group => parseGroup(acc, group));
 
+	const result: Parser.Result<string[], Parser.Teacher[]> = {
+		lessons: acc.lessons,
+		teachers: acc.teachers.toArray(),
+		groups: Array.from(acc.groups),
+		disciplines: Array.from(acc.disciplines),
+	};
 
 	return result;
 }
