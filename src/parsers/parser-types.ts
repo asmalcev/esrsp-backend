@@ -1,6 +1,6 @@
-import { TeacherDto } from "src/roles/dto/teacher.dto";
-import { DisciplineDto } from "src/schedule/dto/discipline.dto";
-import { StudentGroupDto } from "src/schedule/dto/student-group.dto";
+import { TeacherDto } from 'src/roles/dto/teacher.dto';
+import { DisciplineDto } from 'src/schedule/dto/discipline.dto';
+import { StudentGroupDto } from 'src/schedule/dto/student-group.dto';
 
 export namespace Parser {
 	export type Teacher = {
@@ -29,5 +29,5 @@ export namespace Parser {
 		groups: StudentGroupDto[];
 		teachers: TeacherDto[];
 		disciplines: DisciplineDto[];
-	}
+	};
 }

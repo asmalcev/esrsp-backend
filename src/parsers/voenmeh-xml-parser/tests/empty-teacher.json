@@ -1,0 +1,28 @@
+{
+	"lessons": [
+		{
+			"disciplineName": "лек АЭРОГИДР-ГАЗ-ДИН",
+			"place": "313;",
+			"studentGroupNames": [
+				"А101С",
+				"А102С"
+			],
+			"lessonNumber": 3,
+			"lessonDay": 2
+		}
+	],
+	"teachers": [],
+	"groups": [
+		{
+			"name": "А101С"
+		},
+		{
+			"name": "А102С"
+		}
+	],
+	"disciplines": [
+		{
+			"name": "лек АЭРОГИДР-ГАЗ-ДИН"
+		}
+	]
+}

@@ -1,34 +1,44 @@
 import { Parser } from '../parser-types';
 
-const objectValuesCompare = (obj1, obj2, keys) => {
+const objectValuesEquals = (obj1, obj2, keys) => {
 	for (const key of keys) {
 		if (obj1[key] !== obj2[key]) return false;
 	}
 	return true;
 };
 
-export const uniqueLessonFilter = (lessons: Parser.Lesson[]): Parser.Lesson[] => {
-	const uniqueLessons: Parser.Lesson[] = [];
+type StudentGroupSetLesson = Omit<Parser.Lesson, 'studentGroupNames'> & {
+	studentGroupNames: Set<string>;
+};
 
-	lessons.forEach((lesson) => {
-		const alreadyInUnique = uniqueLessons.find((uniqueLesson) => {
-			const sameOthers = objectValuesCompare(uniqueLesson, lesson, [
-				'disciplineName',
+export const uniqueLessonFilter = (
+	lessons: Parser.Lesson[],
+): Parser.Lesson[] => {
+	const uniqueLessons: StudentGroupSetLesson[] = [];
+
+	for (const lesson of lessons) {
+		const alreadyInUnique = uniqueLessons.find((uniqueLesson) =>
+			objectValuesEquals(uniqueLesson, lesson, [
+				'teacherId',
 				'lessonDay',
 				'lessonNumber',
+				'disciplineName',
 				'place',
-				'teacherId',
-			]);
-
-			return sameOthers;
-		});
+			]),
+		);
 
 		if (alreadyInUnique) {
-			alreadyInUnique.studentGroupNames.push(...lesson.studentGroupNames);
+			alreadyInUnique.studentGroupNames.add(lesson.studentGroupNames[0]);
 		} else {
-			uniqueLessons.push(lesson);
+			uniqueLessons.push({
+				...lesson,
+				studentGroupNames: new Set(lesson.studentGroupNames),
+			});
 		}
-	});
+	}
 
-	return uniqueLessons;
+	return uniqueLessons.map((lesson) => ({
+		...lesson,
+		studentGroupNames: Array.from(lesson.studentGroupNames),
+	}));
 };

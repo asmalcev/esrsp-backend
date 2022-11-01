@@ -17,7 +17,7 @@ export class UploadController {
 		await this.uploadService.fillWithVoenmehTimetable(file.buffer.toString());
 		return {
 			msg: 'success',
-		}
+		};
 	}
 
 	@Post('/removeall')
@@ -25,6 +25,6 @@ export class UploadController {
 		await this.uploadService.removeAll();
 		return {
 			msg: 'success',
-		}
+		};
 	}
 }

@@ -15,3 +15,5 @@ const dirPath = '../../../timetable/';
 const parseResult = parse(readFile(dirPath + 'voenmeh.timetable.xml'));
 writeFile(dirPath + 'voenmeh.timetable.json', JSON.stringify(parseResult));
 
+// const parseResult = parse(readFile('tests/multi-teacher.xml'));
+// console.log('\n\n', parseResult.lessons);

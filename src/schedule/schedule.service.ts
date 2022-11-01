@@ -92,7 +92,7 @@ export class ScheduleService {
 	 */
 	async createLesson(lessonDto: LessonDto): Promise<Lesson> {
 		const studentGroups = await Promise.all(
-			lessonDto.studentGroupIds.map(id => this.getStudentGroup(id)),
+			lessonDto.studentGroupIds.map((id) => this.getStudentGroup(id)),
 		);
 		const discipline = await this.getDiscipline(lessonDto.disciplineId);
 		const teacher = await this.rolesService.getTeacher(lessonDto.teacherId);
@@ -106,17 +106,19 @@ export class ScheduleService {
 	}
 
 	async createLessons(lessonDtos: LessonDto[]): Promise<void> {
-		lessonDtos.forEach(lessonDto =>
-			this.createLesson(lessonDto)
-		);
+		lessonDtos.forEach((lessonDto) => this.createLesson(lessonDto));
 	}
 
 	async createLessonsByNames(lessonDtos: LessonWithNamesDto[]): Promise<void> {
 		for (const lessonDto of lessonDtos) {
 			const studentGroups = await Promise.all(
-				lessonDto.studentGroupNames.map(name => this.getStudentGroupByName(name)),
+				lessonDto.studentGroupNames.map((name) =>
+					this.getStudentGroupByName(name),
+				),
 			);
-			const discipline = await this.getDisciplineByName(lessonDto.disciplineName);
+			const discipline = await this.getDisciplineByName(
+				lessonDto.disciplineName,
+			);
 			const teacher = await this.rolesService.getTeacher(lessonDto.teacherId);
 
 			await this.lessonsRepository.save({
@@ -124,7 +126,7 @@ export class ScheduleService {
 				studentGroups,
 				discipline,
 				teacher,
-			})
+			});
 		}
 	}
 
@@ -175,7 +177,9 @@ export class ScheduleService {
 		return this.disciplinesRepository.save({ ...disciplineDto });
 	}
 
-	async createDisciplines(disciplineDtos: DisciplineDto[]): Promise<InsertResult> {
+	async createDisciplines(
+		disciplineDtos: DisciplineDto[],
+	): Promise<InsertResult> {
 		return this.disciplinesRepository
 			.createQueryBuilder()
 			.insert()

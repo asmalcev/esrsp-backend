@@ -28,10 +28,12 @@ const parseLecturers = (
 		id: lecturer['IdLecturer'],
 		fullname: lecturer['ShortName'],
 	} as WithId);
-	return [{
-		id: lecturer['IdLecturer'] as number,
-		fullname: lecturer['ShortName'] as string,
-	}];
+	return [
+		{
+			id: lecturer['IdLecturer'] as number,
+			fullname: lecturer['ShortName'] as string,
+		},
+	];
 };
 
 const parseDay = (
@@ -74,7 +76,10 @@ const parseDay = (
 	}
 };
 
-const parseGroup = (acc: Parser.IntermediateResult<Set<string>, IdSet>, group: any) => {
+const parseGroup = (
+	acc: Parser.IntermediateResult<Set<string>, IdSet>,
+	group: any,
+) => {
 	const groupName: string = group['@_Number'];
 	acc.groups.add(groupName);
 
@@ -110,8 +115,10 @@ export const parse = (xmlInput: string): Parser.Result => {
 	const result: Parser.Result = {
 		lessons: uniqueLessonFilter(acc.lessons),
 		teachers: acc.teachers.toArray() as TeacherDto[],
-		groups: Array.from(acc.groups).map(group => ({ name: group })),
-		disciplines: Array.from(acc.disciplines).map(discipline => ({ name: discipline })),
+		groups: Array.from(acc.groups).map((group) => ({ name: group })),
+		disciplines: Array.from(acc.disciplines).map((discipline) => ({
+			name: discipline,
+		})),
 	};
 
 	return result;
