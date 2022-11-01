@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentGroup } from 'src/schedule/entity/student-group';
 import { ScheduleService } from 'src/schedule/schedule.service';
-import { Repository } from 'typeorm';
+import { InsertResult, Repository } from 'typeorm';
 import { StudentDto } from './dto/student.dto';
 import { TeacherDto } from './dto/teacher.dto';
 import { Student } from './entity/student';
@@ -90,6 +90,15 @@ export class RolesService {
 	 */
 	async createTeacher(teacherDto: TeacherDto): Promise<Teacher> {
 		return this.teacherRepository.save({ ...teacherDto });
+	}
+
+	async createTeachers(teacherDtos: TeacherDto[]): Promise<InsertResult> {
+		return this.teacherRepository
+			.createQueryBuilder()
+			.insert()
+			.into(Teacher)
+			.values(teacherDtos)
+			.execute();
 	}
 
 	async getTeacher(id: number): Promise<Teacher> {

@@ -71,21 +71,21 @@ export class ScheduleController {
 	/*
 	 * Discipline
 	 */
-	@Get('/group/:id')
+	@Get('/discipline/:id')
 	async getDiscipline(
 		@Param('id', ParseIntPipe) id: number,
 	): Promise<Discipline> {
 		return this.scheduleService.getDiscipline(id);
 	}
 
-	@Post('/group')
+	@Post('/discipline')
 	async createDiscipline(
 		@Body() disciplineDto: DisciplineDto,
 	): Promise<Discipline> {
 		return this.scheduleService.createDiscipline(disciplineDto);
 	}
 
-	@Put('/group/:id')
+	@Put('/discipline/:id')
 	async updateDiscipline(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() disciplineDto: Partial<DisciplineDto>,
@@ -96,7 +96,7 @@ export class ScheduleController {
 		};
 	}
 
-	@Delete('/group/:id')
+	@Delete('/discipline/:id')
 	async removeDiscipline(
 		@Param('id', ParseIntPipe) id: number,
 	): Promise<DisciplineRemoveResponse> {
@@ -109,17 +109,17 @@ export class ScheduleController {
 	/*
 	 * Lesson
 	 */
-	@Get('/group/:id')
+	@Get('/lesson/:id')
 	async getLesson(@Param('id', ParseIntPipe) id: number): Promise<Lesson> {
 		return this.scheduleService.getLesson(id);
 	}
 
-	@Post('/group')
+	@Post('/lesson')
 	async createLesson(@Body() lessonDto: LessonDto): Promise<Lesson> {
 		return this.scheduleService.createLesson(lessonDto);
 	}
 
-	@Put('/group/:id')
+	@Put('/lesson/:id')
 	async updateLesson(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() lessonDto: Partial<LessonDto>,
@@ -130,7 +130,7 @@ export class ScheduleController {
 		};
 	}
 
-	@Delete('/group/:id')
+	@Delete('/lesson/:id')
 	async removeLesson(
 		@Param('id', ParseIntPipe) id: number,
 	): Promise<LessonRemoveResponse> {

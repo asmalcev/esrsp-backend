@@ -1,9 +1,9 @@
 import { Lesson } from 'src/schedule/entity/lesson';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'teacher' })
 export class Teacher {
-	@PrimaryGeneratedColumn('increment')
+	@PrimaryColumn()
 	id: number;
 
 	@Column()

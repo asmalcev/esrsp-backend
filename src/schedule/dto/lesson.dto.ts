@@ -35,3 +35,12 @@ export class LessonDto {
 	@IsString()
 	place: string;
 }
+
+export class LessonWithNamesDto {
+	studentGroupNames: string[];
+	teacherId: number;
+	disciplineName: string;
+	lessonNumber: number;
+	lessonDay: number;
+	place: string;
+}

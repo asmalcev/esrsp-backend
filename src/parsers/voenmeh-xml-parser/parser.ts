@@ -1,36 +1,41 @@
 import { XMLParser } from 'fast-xml-parser';
 import { WithId } from 'src/common-types';
+import { TeacherDto } from 'src/roles/dto/teacher.dto';
 import { IdSet } from '../id-set';
 import { ruWeekDays } from '../parser-days';
 import { Parser } from '../parser-types';
+import { uniqueLessonFilter } from './lesson-filter';
 import { getLessonNumber } from './lessons-time';
 
 const parseLecturers = (
-	acc: Parser.Result<Set<string>, IdSet>,
+	acc: Parser.IntermediateResult<Set<string>, IdSet>,
 	lecturer: any,
 ): Parser.Teacher[] => {
 	if (lecturer instanceof Array) {
 		lecturer.forEach((teacher) =>
 			acc.teachers.add({
 				id: teacher['IdLecturer'],
-				name: teacher['ShortName'],
+				fullname: teacher['ShortName'],
 			} as WithId),
 		);
 		return lecturer.map((teacher) => ({
 			id: teacher['IdLecturer'] as number,
-			name: teacher['ShortName'] as string,
+			fullname: teacher['ShortName'] as string,
 		}));
 	}
 
 	acc.teachers.add({
 		id: lecturer['IdLecturer'],
-		name: lecturer['ShortName'],
+		fullname: lecturer['ShortName'],
 	} as WithId);
-	return [lecturer['ShortName']];
+	return [{
+		id: lecturer['IdLecturer'] as number,
+		fullname: lecturer['ShortName'] as string,
+	}];
 };
 
 const parseDay = (
-	acc: Parser.Result<Set<string>, IdSet>,
+	acc: Parser.IntermediateResult<Set<string>, IdSet>,
 	day: any,
 	groupName: string,
 ) => {
@@ -42,9 +47,9 @@ const parseDay = (
 		const teachers: Parser.Teacher[] = lesson['Lecturers']
 			? parseLecturers(acc, lesson['Lecturers']['Lecturer'])
 			: [{}];
-		const discipline: string = lesson['Discipline'];
+		const disciplineName: string = lesson['Discipline'];
 		const place: string = lesson['Classroom'];
-		const groups: string[] = [groupName];
+		const studentGroupNames: string[] = [groupName];
 		const lessonNumber: number = getLessonNumber(lesson['Time']);
 
 		// lessonDay =
@@ -54,14 +59,14 @@ const parseDay = (
 		const lessonDay: number =
 			ruWeekDays.indexOf(lesson['DayTitle']) + lesson['WeekCode'] * 7 - 6;
 
-		acc.disciplines.add(discipline);
+		acc.disciplines.add(disciplineName);
 
 		acc.lessons.push(
 			...teachers.map((teacher) => ({
-				teacher,
-				discipline,
+				teacherId: teacher.id,
+				disciplineName,
 				place,
-				groups,
+				studentGroupNames,
 				lessonNumber,
 				lessonDay,
 			})),
@@ -69,7 +74,7 @@ const parseDay = (
 	}
 };
 
-const parseGroup = (acc: Parser.Result<Set<string>, IdSet>, group: any) => {
+const parseGroup = (acc: Parser.IntermediateResult<Set<string>, IdSet>, group: any) => {
 	const groupName: string = group['@_Number'];
 	acc.groups.add(groupName);
 
@@ -86,27 +91,27 @@ const parseGroup = (acc: Parser.Result<Set<string>, IdSet>, group: any) => {
 	);
 };
 
-export const parse = (xmlInput: string) => {
+export const parse = (xmlInput: string): Parser.Result => {
 	const options = {
 		ignoreAttributes: false,
 	};
 	const parser = new XMLParser(options);
-	const timetable = parser.parse(xmlInput).Timetable;
+	const timetable = parser.parse(xmlInput)['Timetable'];
 
-	const acc: Parser.Result<Set<string>, IdSet> = {
+	const acc: Parser.IntermediateResult<Set<string>, IdSet> = {
 		lessons: [],
 		teachers: new IdSet(),
 		groups: new Set(),
 		disciplines: new Set(),
 	};
 
-	timetable.Group.forEach((group) => parseGroup(acc, group));
+	timetable['Group'].forEach((group) => parseGroup(acc, group));
 
-	const result: Parser.Result<string[], Parser.Teacher[]> = {
-		lessons: acc.lessons,
-		teachers: acc.teachers.toArray(),
-		groups: Array.from(acc.groups),
-		disciplines: Array.from(acc.disciplines),
+	const result: Parser.Result = {
+		lessons: uniqueLessonFilter(acc.lessons),
+		teachers: acc.teachers.toArray() as TeacherDto[],
+		groups: Array.from(acc.groups).map(group => ({ name: group })),
+		disciplines: Array.from(acc.disciplines).map(discipline => ({ name: discipline })),
 	};
 
 	return result;

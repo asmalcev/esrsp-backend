@@ -13,7 +13,18 @@ export class UploadController {
 
 	@Post('/timetable/voenmeh/xml')
 	@UseInterceptors(FileInterceptor('file'))
-	uploadVoenmehTimetable(@UploadedFile() file: Express.Multer.File) {
-		this.uploadService.fillWithVoenmehTimetable(file.buffer.toString());
+	async uploadVoenmehTimetable(@UploadedFile() file: Express.Multer.File) {
+		await this.uploadService.fillWithVoenmehTimetable(file.buffer.toString());
+		return {
+			msg: 'success',
+		}
+	}
+
+	@Post('/removeall')
+	async removeAll() {
+		await this.uploadService.removeAll();
+		return {
+			msg: 'success',
+		}
 	}
 }

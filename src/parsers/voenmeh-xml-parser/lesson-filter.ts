@@ -7,27 +7,24 @@ const objectValuesCompare = (obj1, obj2, keys) => {
 	return true;
 };
 
-export const uniqueLessonFilter = (lessons: Parser.Lesson[]) => {
+export const uniqueLessonFilter = (lessons: Parser.Lesson[]): Parser.Lesson[] => {
 	const uniqueLessons: Parser.Lesson[] = [];
 
 	lessons.forEach((lesson) => {
 		const alreadyInUnique = uniqueLessons.find((uniqueLesson) => {
 			const sameOthers = objectValuesCompare(uniqueLesson, lesson, [
-				'discipline',
+				'disciplineName',
 				'lessonDay',
 				'lessonNumber',
 				'place',
+				'teacherId',
 			]);
 
-			const sameTeacher =
-				(!uniqueLesson.teacher && !lesson.teacher) ||
-				uniqueLesson.teacher.id === lesson.teacher.id;
-
-			return sameOthers && sameTeacher;
+			return sameOthers;
 		});
 
 		if (alreadyInUnique) {
-			alreadyInUnique.groups.push(...lesson.groups);
+			alreadyInUnique.studentGroupNames.push(...lesson.studentGroupNames);
 		} else {
 			uniqueLessons.push(lesson);
 		}
