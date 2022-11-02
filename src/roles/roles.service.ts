@@ -38,14 +38,14 @@ export class RolesService {
 			);
 		}
 
-		return this.studentRepository.save({
+		return await this.studentRepository.save({
 			...studentDto,
 			...other,
 		});
 	}
 
 	async getStudent(id: number): Promise<Student> {
-		const student = this.studentRepository.findOne({ where: { id } });
+		const student = await this.studentRepository.findOne({ where: { id } });
 
 		if (!student) {
 			throw new NotFoundException('student is not found');
@@ -89,11 +89,11 @@ export class RolesService {
 	 * Teacher
 	 */
 	async createTeacher(teacherDto: TeacherDto): Promise<Teacher> {
-		return this.teacherRepository.save({ ...teacherDto });
+		return await this.teacherRepository.save({ ...teacherDto });
 	}
 
 	async createTeachers(teacherDtos: TeacherDto[]): Promise<InsertResult> {
-		return this.teacherRepository
+		return await this.teacherRepository
 			.createQueryBuilder()
 			.insert()
 			.into(Teacher)
@@ -102,7 +102,7 @@ export class RolesService {
 	}
 
 	async getTeacher(id: number): Promise<Teacher> {
-		const teacher = this.teacherRepository.findOne({ where: { id } });
+		const teacher = await this.teacherRepository.findOne({ where: { id } });
 
 		if (!teacher) {
 			throw new NotFoundException('teacher is not found');

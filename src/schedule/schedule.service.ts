@@ -34,13 +34,13 @@ export class ScheduleService {
 	async createStudentGroup(
 		studentGroupDto: StudentGroupDto,
 	): Promise<StudentGroup> {
-		return this.studentGroupsRepository.save({ ...studentGroupDto });
+		return await this.studentGroupsRepository.save({ ...studentGroupDto });
 	}
 
 	async createStudentGroups(
 		studentGroupDtos: StudentGroupDto[],
 	): Promise<InsertResult> {
-		return this.studentGroupsRepository
+		return await this.studentGroupsRepository
 			.createQueryBuilder()
 			.insert()
 			.into(StudentGroup)
@@ -49,7 +49,7 @@ export class ScheduleService {
 	}
 
 	async getStudentGroup(id: number): Promise<StudentGroup> {
-		const studentGroup = this.studentGroupsRepository.findOne({
+		const studentGroup = await this.studentGroupsRepository.findOne({
 			where: { id },
 		});
 
@@ -61,7 +61,7 @@ export class ScheduleService {
 	}
 
 	async getStudentGroupByName(name: string): Promise<StudentGroup> {
-		const studentGroup = this.studentGroupsRepository.findOne({
+		const studentGroup = await this.studentGroupsRepository.findOne({
 			where: { name },
 		});
 
@@ -97,7 +97,7 @@ export class ScheduleService {
 		const discipline = await this.getDiscipline(lessonDto.disciplineId);
 		const teacher = await this.rolesService.getTeacher(lessonDto.teacherId);
 
-		return this.lessonsRepository.save({
+		return await this.lessonsRepository.save({
 			...lessonDto,
 			studentGroups,
 			discipline,
@@ -106,7 +106,9 @@ export class ScheduleService {
 	}
 
 	async createLessons(lessonDtos: LessonDto[]): Promise<void> {
-		lessonDtos.forEach((lessonDto) => this.createLesson(lessonDto));
+		for (const lessonDto of lessonDtos) {
+			await this.createLesson(lessonDto);
+		}
 	}
 
 	async createLessonsByNames(lessonDtos: LessonWithNamesDto[]): Promise<void> {
@@ -131,7 +133,7 @@ export class ScheduleService {
 	}
 
 	async getLesson(id: number): Promise<Lesson> {
-		const lesson = this.lessonsRepository.findOne({ where: { id } });
+		const lesson = await this.lessonsRepository.findOne({ where: { id } });
 
 		if (!lesson) {
 			throw new NotFoundException('lesson is not found');
@@ -174,13 +176,13 @@ export class ScheduleService {
 	 * Discipline
 	 */
 	async createDiscipline(disciplineDto: DisciplineDto): Promise<Discipline> {
-		return this.disciplinesRepository.save({ ...disciplineDto });
+		return await this.disciplinesRepository.save({ ...disciplineDto });
 	}
 
 	async createDisciplines(
 		disciplineDtos: DisciplineDto[],
 	): Promise<InsertResult> {
-		return this.disciplinesRepository
+		return await this.disciplinesRepository
 			.createQueryBuilder()
 			.insert()
 			.into(Discipline)
@@ -189,7 +191,7 @@ export class ScheduleService {
 	}
 
 	async getDiscipline(id: number): Promise<Discipline> {
-		const discipline = this.disciplinesRepository.findOne({ where: { id } });
+		const discipline = await this.disciplinesRepository.findOne({ where: { id } });
 
 		if (!discipline) {
 			throw new NotFoundException('discipline is not found');
@@ -199,7 +201,7 @@ export class ScheduleService {
 	}
 
 	async getDisciplineByName(name: string): Promise<Discipline> {
-		const discipline = this.disciplinesRepository.findOne({ where: { name } });
+		const discipline = await this.disciplinesRepository.findOne({ where: { name } });
 
 		if (!discipline) {
 			throw new NotFoundException('discipline is not found');

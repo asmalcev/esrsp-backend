@@ -27,7 +27,7 @@ export class PerformanceService {
 			performanceDto.disciplineId,
 		);
 
-		return this.performanceRepository.save({
+		return await this.performanceRepository.save({
 			...performanceDto,
 			student,
 			discipline,
@@ -35,7 +35,7 @@ export class PerformanceService {
 	}
 
 	async getPerformance(id: number): Promise<Performance> {
-		const performance = this.performanceRepository.findOne({ where: { id } });
+		const performance = await this.performanceRepository.findOne({ where: { id } });
 
 		if (!performance) {
 			throw new NotFoundException('performance is not found');
