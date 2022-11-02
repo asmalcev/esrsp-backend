@@ -21,10 +21,13 @@ export class Lesson {
 
 	@ManyToOne(() => Teacher, (teacher) => teacher.lessons, {
 		nullable: true,
+		onDelete: 'CASCADE',
 	})
 	teacher: Teacher;
 
-	@ManyToOne(() => Discipline, (discipline) => discipline.lessons)
+	@ManyToOne(() => Discipline, (discipline) => discipline.lessons, {
+		onDelete: 'CASCADE',
+	})
 	discipline: Discipline;
 
 	@Column()

@@ -27,4 +27,13 @@ export class UploadController {
 			msg: 'success',
 		};
 	}
+
+	@Post('/timetable/json')
+	@UseInterceptors(FileInterceptor('file'))
+	async uploadTimetable(@UploadedFile() file: Express.Multer.File) {
+		await this.uploadService.fillWithTimetable(file.buffer.toString());
+		return {
+			msg: 'success',
+		};
+	}
 }

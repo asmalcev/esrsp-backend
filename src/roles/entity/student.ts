@@ -21,11 +21,13 @@ export class Student {
 
 	@ManyToOne(() => StudentGroup, (studentGroup) => studentGroup.students, {
 		nullable: true,
+		onDelete: 'SET NULL',
 	})
 	studentGroup: StudentGroup;
 
 	@OneToMany(() => Performance, (performance) => performance.student, {
 		nullable: true,
+		cascade: true,
 	})
 	performance: Performance[];
 }
