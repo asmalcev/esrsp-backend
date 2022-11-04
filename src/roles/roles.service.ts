@@ -7,7 +7,12 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentGroup } from 'src/schedule/entity/student-group';
 import { ScheduleService } from 'src/schedule/schedule.service';
-import { FindOneOptions, InsertResult, Repository } from 'typeorm';
+import {
+	FindManyOptions,
+	FindOneOptions,
+	InsertResult,
+	Repository,
+} from 'typeorm';
 import { StudentDto } from './dto/student.dto';
 import { TeacherDto } from './dto/teacher.dto';
 import { Student } from './entity/student';
@@ -35,6 +40,11 @@ export class RolesService {
 		if (studentDto.studentGroupId) {
 			other.studentGroup = await this.scheduleService.getStudentGroup(
 				studentDto.studentGroupId,
+				{
+					select: {
+						id: true,
+					},
+				},
 			);
 		}
 
@@ -66,6 +76,12 @@ export class RolesService {
 		return student;
 	}
 
+	async getStudents(other?: FindManyOptions<Student>): Promise<Student[]> {
+		return await this.studentRepository.find({
+			...other,
+		});
+	}
+
 	async updateStudent(
 		id: number,
 		studentDto: Partial<StudentDto>,
@@ -77,6 +93,11 @@ export class RolesService {
 		if (studentDto.studentGroupId) {
 			other.studentGroup = await this.scheduleService.getStudentGroup(
 				studentDto.studentGroupId,
+				{
+					select: {
+						id: true,
+					},
+				},
 			);
 		}
 
@@ -127,6 +148,12 @@ export class RolesService {
 		}
 
 		return teacher;
+	}
+
+	async getTeachers(other?: FindManyOptions<Teacher>): Promise<Teacher[]> {
+		return await this.teacherRepository.find({
+			...other,
+		});
 	}
 
 	async updateTeacher(

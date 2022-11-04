@@ -8,13 +8,11 @@ import {
 	Post,
 	Put,
 } from '@nestjs/common';
+import { successResponse } from 'src/common-responses';
 import { WithMsg } from 'src/common-types';
 import { PerformanceDto } from './dto/performance.dto';
 import { Performance } from './entity/performance';
 import { PerformanceService } from './performance.service';
-
-type PerformanceUpdateResponse = WithMsg & {};
-type PerformanceRemoveResponse = WithMsg & {};
 
 @Controller('performance')
 export class PerformanceController {
@@ -25,6 +23,11 @@ export class PerformanceController {
 		@Param('id', ParseIntPipe) id: number,
 	): Promise<Performance> {
 		return this.performanceService.getPerformance(id);
+	}
+
+	@Get('/')
+	async getPerformances(): Promise<Performance[]> {
+		return this.performanceService.getPerformances();
 	}
 
 	@Post('/')
@@ -38,20 +41,16 @@ export class PerformanceController {
 	async updatePerformance(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() PerformanceDto: Partial<PerformanceDto>,
-	): Promise<PerformanceUpdateResponse> {
+	): Promise<WithMsg> {
 		this.performanceService.updatePerformance(id, PerformanceDto);
-		return {
-			msg: 'success',
-		};
+		return successResponse;
 	}
 
 	@Delete('/:id')
 	async removePerformance(
 		@Param('id', ParseIntPipe) id: number,
-	): Promise<PerformanceRemoveResponse> {
+	): Promise<WithMsg> {
 		this.performanceService.removePerformance(id);
-		return {
-			msg: 'success',
-		};
+		return successResponse;
 	}
 }

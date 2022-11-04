@@ -8,18 +8,13 @@ import {
 	Post,
 	Put,
 } from '@nestjs/common';
+import { successResponse } from 'src/common-responses';
 import { WithMsg } from 'src/common-types';
 import { StudentDto } from './dto/student.dto';
 import { TeacherDto } from './dto/teacher.dto';
 import { Student } from './entity/student';
 import { Teacher } from './entity/teacher';
 import { RolesService } from './roles.service';
-
-type StudentUpdateResponse = WithMsg & {};
-type StudentRemoveResponse = WithMsg & {};
-
-type TeacherUpdateResponse = WithMsg & {};
-type TeacherRemoveResponse = WithMsg & {};
 
 @Controller('roles')
 export class RolesController {
@@ -33,6 +28,11 @@ export class RolesController {
 		return this.rolesService.getStudent(id);
 	}
 
+	@Get('/student')
+	async getStudents(): Promise<Student[]> {
+		return this.rolesService.getStudents();
+	}
+
 	@Post('/student')
 	async createStudent(@Body() studentDto: StudentDto): Promise<Student> {
 		return this.rolesService.createStudent(studentDto);
@@ -42,21 +42,15 @@ export class RolesController {
 	async updateStudent(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() studentDto: Partial<StudentDto>,
-	): Promise<StudentUpdateResponse> {
+	): Promise<WithMsg> {
 		this.rolesService.updateStudent(id, studentDto);
-		return {
-			msg: 'success',
-		};
+		return successResponse;
 	}
 
 	@Delete('/student/:id')
-	async removeStudent(
-		@Param('id', ParseIntPipe) id: number,
-	): Promise<StudentRemoveResponse> {
+	async removeStudent(@Param('id', ParseIntPipe) id: number): Promise<WithMsg> {
 		this.rolesService.removeStudent(id);
-		return {
-			msg: 'success',
-		};
+		return successResponse;
 	}
 
 	/*
@@ -65,6 +59,11 @@ export class RolesController {
 	@Get('/teacher/:id')
 	async getTeacher(@Param('id', ParseIntPipe) id: number): Promise<Teacher> {
 		return this.rolesService.getTeacher(id);
+	}
+
+	@Get('/teacher')
+	async getTeachers(): Promise<Teacher[]> {
+		return this.rolesService.getTeachers();
 	}
 
 	@Post('/teacher')
@@ -76,20 +75,14 @@ export class RolesController {
 	async updateTeacher(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() teacherDto: Partial<TeacherDto>,
-	): Promise<TeacherUpdateResponse> {
+	): Promise<WithMsg> {
 		this.rolesService.updateTeacher(id, teacherDto);
-		return {
-			msg: 'success',
-		};
+		return successResponse;
 	}
 
 	@Delete('/teacher/:id')
-	async removeTeacher(
-		@Param('id', ParseIntPipe) id: number,
-	): Promise<TeacherRemoveResponse> {
+	async removeTeacher(@Param('id', ParseIntPipe) id: number): Promise<WithMsg> {
 		this.rolesService.removeTeacher(id);
-		return {
-			msg: 'success',
-		};
+		return successResponse;
 	}
 }

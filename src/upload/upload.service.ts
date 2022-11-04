@@ -64,12 +64,15 @@ export class UploadService {
 			const result = JSON.parse(groups);
 
 			for (const group of result) {
-				const _group = await this.scheduleService.getStudentGroupByName(group.name);
+				const _group = await this.scheduleService.getStudentGroupByName(
+					group.name,
+					{},
+				);
 				await this.rolesService.createStudents(
-					group.students.map(student => ({
+					group.students.map((student) => ({
 						...student,
 						studentGroupId: _group.id,
-					}))
+					})),
 				);
 			}
 			// await this.rolesService.createTeachers(result.teachers);

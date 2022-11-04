@@ -7,7 +7,12 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from 'src/roles/entity/teacher';
 import { RolesService } from 'src/roles/roles.service';
-import { InsertResult, IsNull, Not, Repository } from 'typeorm';
+import {
+	FindManyOptions,
+	FindOneOptions,
+	InsertResult,
+	Repository,
+} from 'typeorm';
 import { DisciplineDto } from './dto/discipline.dto';
 import { LessonDto, LessonWithNamesDto } from './dto/lesson.dto';
 import { StudentGroupDto } from './dto/student-group.dto';
@@ -48,9 +53,17 @@ export class ScheduleService {
 			.execute();
 	}
 
-	async getStudentGroup(id: number): Promise<StudentGroup> {
+	async getStudentGroup(
+		id: number,
+		other: Omit<FindOneOptions<StudentGroup>, 'where'> = {
+			relations: {
+				students: true,
+			},
+		},
+	): Promise<StudentGroup> {
 		const studentGroup = await this.studentGroupsRepository.findOne({
 			where: { id },
+			...other,
 		});
 
 		if (!studentGroup) {
@@ -60,9 +73,17 @@ export class ScheduleService {
 		return studentGroup;
 	}
 
-	async getStudentGroupByName(name: string): Promise<StudentGroup> {
+	async getStudentGroupByName(
+		name: string,
+		other: Omit<FindOneOptions<StudentGroup>, 'where'> = {
+			relations: {
+				students: true,
+			},
+		},
+	): Promise<StudentGroup> {
 		const studentGroup = await this.studentGroupsRepository.findOne({
 			where: { name },
+			...other,
 		});
 
 		if (!studentGroup) {
@@ -70,6 +91,14 @@ export class ScheduleService {
 		}
 
 		return studentGroup;
+	}
+
+	async getStudentGroups(
+		other?: FindManyOptions<StudentGroup>,
+	): Promise<StudentGroup[]> {
+		return await this.studentGroupsRepository.find({
+			...other,
+		});
 	}
 
 	async updateStudentGroup(
@@ -92,7 +121,7 @@ export class ScheduleService {
 	 */
 	async createLesson(lessonDto: LessonDto): Promise<Lesson> {
 		const studentGroups = await Promise.all(
-			lessonDto.studentGroupIds.map((id) => this.getStudentGroup(id)),
+			lessonDto.studentGroupIds.map((id) => this.getStudentGroup(id, {})),
 		);
 		const discipline = await this.getDiscipline(lessonDto.disciplineId);
 		const teacher = await this.rolesService.getTeacher(lessonDto.teacherId);
@@ -115,14 +144,16 @@ export class ScheduleService {
 		for (const lessonDto of lessonDtos) {
 			const studentGroups = await Promise.all(
 				lessonDto.studentGroupNames.map((name) =>
-					this.getStudentGroupByName(name),
+					this.getStudentGroupByName(name, {}),
 				),
 			);
 			const discipline = await this.getDisciplineByName(
 				lessonDto.disciplineName,
 			);
 
-			const teacher = lessonDto.teacherId ? await this.rolesService.getTeacher(lessonDto.teacherId) : null;
+			const teacher = lessonDto.teacherId
+				? await this.rolesService.getTeacher(lessonDto.teacherId)
+				: null;
 
 			await this.lessonsRepository.save({
 				...lessonDto,
@@ -133,16 +164,19 @@ export class ScheduleService {
 		}
 	}
 
-	async getLesson(id: number): Promise<Lesson> {
-		const lesson = await this.lessonsRepository.findOne({
-			where: {
-				id
-			},
+	async getLesson(
+		id: number,
+		other: Omit<FindOneOptions<Lesson>, 'where'> = {
 			relations: {
 				studentGroups: true,
 				teacher: true,
 				discipline: true,
-			}
+			},
+		},
+	): Promise<Lesson> {
+		const lesson = await this.lessonsRepository.findOne({
+			where: { id },
+			...other,
 		});
 
 		if (!lesson) {
@@ -150,6 +184,20 @@ export class ScheduleService {
 		}
 
 		return lesson;
+	}
+
+	async getLessons(
+		other: FindManyOptions<Lesson> = {
+			relations: {
+				studentGroups: true,
+				teacher: true,
+				discipline: true,
+			},
+		},
+	): Promise<Lesson[]> {
+		return await this.lessonsRepository.find({
+			...other,
+		});
 	}
 
 	async updateLesson(id: number, lessonDto: Partial<LessonDto>): Promise<void> {
@@ -161,7 +209,7 @@ export class ScheduleService {
 
 		if (lessonDto.studentGroupIds) {
 			other.studentGroups = await Promise.all(
-				lessonDto.studentGroupIds.map((id) => this.getStudentGroup(id)),
+				lessonDto.studentGroupIds.map((id) => this.getStudentGroup(id, {})),
 			);
 		}
 		if (lessonDto.disciplineId) {
@@ -200,8 +248,14 @@ export class ScheduleService {
 			.execute();
 	}
 
-	async getDiscipline(id: number): Promise<Discipline> {
-		const discipline = await this.disciplinesRepository.findOne({ where: { id } });
+	async getDiscipline(
+		id: number,
+		other?: Omit<FindOneOptions<Discipline>, 'where'>,
+	): Promise<Discipline> {
+		const discipline = await this.disciplinesRepository.findOne({
+			where: { id },
+			...other,
+		});
 
 		if (!discipline) {
 			throw new NotFoundException('discipline is not found');
@@ -210,14 +264,28 @@ export class ScheduleService {
 		return discipline;
 	}
 
-	async getDisciplineByName(name: string): Promise<Discipline> {
-		const discipline = await this.disciplinesRepository.findOne({ where: { name } });
+	async getDisciplineByName(
+		name: string,
+		other?: Omit<FindOneOptions<Discipline>, 'where'>,
+	): Promise<Discipline> {
+		const discipline = await this.disciplinesRepository.findOne({
+			where: { name },
+			...other,
+		});
 
 		if (!discipline) {
 			throw new NotFoundException('discipline is not found');
 		}
 
 		return discipline;
+	}
+
+	async getDisciplines(
+		other?: Omit<FindManyOptions<Discipline>, 'where'>,
+	): Promise<Discipline[]> {
+		return await this.disciplinesRepository.find({
+			...other,
+		});
 	}
 
 	async updateDiscipline(
@@ -238,9 +306,7 @@ export class ScheduleService {
 	/*
 	 * Schedule
 	 */
-	async getTeacherSchedule(
-		id: number,
-	) {
+	async getTeacherSchedule(id: number): Promise<Lesson[]> {
 		return await this.lessonsRepository.find({
 			where: {
 				teacher: { id },
@@ -253,25 +319,16 @@ export class ScheduleService {
 			order: {
 				lessonDay: 'ASC',
 				lessonNumber: 'ASC',
-			}
+			},
 		});
 	}
 
-	async getStudentSchedule(
-		id: number,
-	) {
-		/*
-		 * Temporary solution while there are not students
-		 */
-		// const student = await this.rolesService.getStudent(id, {
-		// 	relations: {
-		// 		studentGroup: true,
-		// 	},
-		// });
-
-		return (await this.lessonsRepository.find({
+	async getStudentSchedule(id: number): Promise<Lesson[]> {
+		return await this.lessonsRepository.find({
 			where: {
-				studentGroups: { id },
+				studentGroups: {
+					students: { id },
+				},
 			},
 			relations: {
 				teacher: true,
@@ -281,7 +338,24 @@ export class ScheduleService {
 			order: {
 				lessonDay: 'ASC',
 				lessonNumber: 'ASC',
-			}
-		})).length;
+			},
+		});
+	}
+
+	// async getTeacherStudentGroups(id: number): Promise<StudentGroup[]> {
+	async getTeacherStudentGroups(teacherId: number): Promise<any> {
+		return this.lessonsRepository.query(`
+			select distinct
+				"D"."name" as "discipline",
+				"D"."id" as "disciplineId",
+				"SG"."name" as "studentGroupName",
+				"SG"."id" as "studentGroupId"
+			from "lesson" as "L"
+			right join "lesson_student_groups_student-group" as "LSG" on "LSG"."lessonId" = "L"."id"
+			join "student-group" as "SG" on "SG"."id" = "LSG"."studentGroupId"
+			join "discipline" as "D" on "D"."id" = "L"."disciplineId"
+			where "L"."teacherId" = ${teacherId}
+			order by "D"."id", "SG"."id"
+		`);
 	}
 }

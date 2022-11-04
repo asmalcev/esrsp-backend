@@ -4,7 +4,7 @@ import { Student } from 'src/roles/entity/student';
 import { RolesService } from 'src/roles/roles.service';
 import { Discipline } from 'src/schedule/entity/discipline';
 import { ScheduleService } from 'src/schedule/schedule.service';
-import { Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { PerformanceDto } from './dto/performance.dto';
 import { Performance } from './entity/performance';
 
@@ -34,14 +34,28 @@ export class PerformanceService {
 		});
 	}
 
-	async getPerformance(id: number): Promise<Performance> {
-		const performance = await this.performanceRepository.findOne({ where: { id } });
+	async getPerformance(
+		id: number,
+		other?: Omit<FindOneOptions<Performance>, 'where'>,
+	): Promise<Performance> {
+		const performance = await this.performanceRepository.findOne({
+			where: { id },
+			...other,
+		});
 
 		if (!performance) {
 			throw new NotFoundException('performance is not found');
 		}
 
 		return performance;
+	}
+
+	async getPerformances(
+		other?: FindManyOptions<Performance>,
+	): Promise<Performance[]> {
+		return await this.performanceRepository.find({
+			...other,
+		});
 	}
 
 	async updatePerformance(
