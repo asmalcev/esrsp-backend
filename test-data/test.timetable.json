@@ -1,0 +1,480 @@
+{
+	"lessons": [
+		{
+			"studentGroupNames": [
+				"О521"
+			],
+			"teacherId": 1,
+			"disciplineName": "пр МАТ.СТАТИСТ.И СП",
+			"lessonNumber": 2,
+			"lessonDay": 1,
+			"place": "323"
+		},
+		{
+			"studentGroupNames": [
+				"О521"
+			],
+			"teacherId": 2,
+			"disciplineName": "лаб БЖД",
+			"lessonNumber": 3,
+			"lessonDay": 1,
+			"place": "445"
+		},
+		{
+			"studentGroupNames": [
+				"О522"
+			],
+			"teacherId": 2,
+			"disciplineName": "лаб БЖД",
+			"lessonNumber": 2,
+			"lessonDay": 1,
+			"place": "445"
+		},
+		{
+			"studentGroupNames": [
+				"О522"
+			],
+			"teacherId": 1,
+			"disciplineName": "пр МАТ.СТАТИСТ.И СП",
+			"lessonNumber": 3,
+			"lessonDay": 1,
+			"place": "323"
+		},
+		{
+			"studentGroupNames": [
+				"И945"
+			],
+			"teacherId": 3,
+			"disciplineName": "пр МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 2,
+			"lessonDay": 1,
+			"place": "218*"
+		},
+		{
+			"studentGroupNames": [
+				"И945"
+			],
+			"teacherId": 4,
+			"disciplineName": "пр БАЗЫ ДАННЫХ",
+			"lessonNumber": 3,
+			"lessonDay": 1,
+			"place": "256*"
+		},
+		{
+			"studentGroupNames": [
+				"И946"
+			],
+			"teacherId": 4,
+			"disciplineName": "пр БАЗЫ ДАННЫХ",
+			"lessonNumber": 2,
+			"lessonDay": 1,
+			"place": "256*"
+		},
+		{
+			"studentGroupNames": [
+				"И946"
+			],
+			"teacherId": 3,
+			"disciplineName": "пр МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 3,
+			"lessonDay": 1,
+			"place": "218*"
+		},
+		{
+			"studentGroupNames": [
+				"И945",
+				"И946"
+			],
+			"teacherId": 2,
+			"disciplineName": "лаб БЖД",
+			"lessonNumber": 3,
+			"lessonDay": 2,
+			"place": "445"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522",
+				"И945",
+				"И946"
+			],
+			"teacherId": 2,
+			"disciplineName": "лек БЖД",
+			"lessonNumber": 3,
+			"lessonDay": 3,
+			"place": "313*"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522"
+			],
+			"teacherId": 3,
+			"disciplineName": "лек МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 4,
+			"lessonDay": 3,
+			"place": "325*"
+		},
+		{
+			"studentGroupNames": [
+				"О521"
+			],
+			"teacherId": 3,
+			"disciplineName": "пр МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 1,
+			"lessonDay": 4,
+			"place": "218*"
+		},
+		{
+			"studentGroupNames": [
+				"О521"
+			],
+			"teacherId": 4,
+			"disciplineName": "пр БАЗЫ ДАННЫХ",
+			"lessonNumber": 3,
+			"lessonDay": 4,
+			"place": "256*"
+		},
+		{
+			"studentGroupNames": [
+				"О522"
+			],
+			"teacherId": 4,
+			"disciplineName": "пр БАЗЫ ДАННЫХ",
+			"lessonNumber": 2,
+			"lessonDay": 4,
+			"place": "256*"
+		},
+		{
+			"studentGroupNames": [
+				"О522"
+			],
+			"teacherId": 3,
+			"disciplineName": "пр МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 3,
+			"lessonDay": 4,
+			"place": "218*"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522"
+			],
+			"teacherId": 5,
+			"disciplineName": "лек ПРЕДСТ.ЗНАН.В ИС",
+			"lessonNumber": 2,
+			"lessonDay": 5,
+			"place": "318"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522",
+				"И945",
+				"И946"
+			],
+			"teacherId": 3,
+			"disciplineName": "лек БАЗЫ ДАННЫХ",
+			"lessonNumber": 3,
+			"lessonDay": 5,
+			"place": "315"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522"
+			],
+			"teacherId": 4,
+			"disciplineName": "лек РАЗР.И АН.ТРЕБ.",
+			"lessonNumber": 4,
+			"lessonDay": 5,
+			"place": "312"
+		},
+		{
+			"studentGroupNames": [
+				"И945",
+				"И946"
+			],
+			"teacherId": 5,
+			"disciplineName": "лек ПРЕДСТ.ЗНАН.В ИС",
+			"lessonNumber": 4,
+			"lessonDay": 5,
+			"place": "318"
+		},
+		{
+			"studentGroupNames": [
+				"О521"
+			],
+			"teacherId": 1,
+			"disciplineName": "пр МАТ.СТАТИСТ.И СП",
+			"lessonNumber": 2,
+			"lessonDay": 8,
+			"place": "323"
+		},
+		{
+			"studentGroupNames": [
+				"О521"
+			],
+			"teacherId": 2,
+			"disciplineName": "лаб БЖД",
+			"lessonNumber": 3,
+			"lessonDay": 8,
+			"place": "445"
+		},
+		{
+			"studentGroupNames": [
+				"О522"
+			],
+			"teacherId": 2,
+			"disciplineName": "лаб БЖД",
+			"lessonNumber": 2,
+			"lessonDay": 8,
+			"place": "445"
+		},
+		{
+			"studentGroupNames": [
+				"О522"
+			],
+			"teacherId": 1,
+			"disciplineName": "пр МАТ.СТАТИСТ.И СП",
+			"lessonNumber": 3,
+			"lessonDay": 8,
+			"place": "323"
+		},
+		{
+			"studentGroupNames": [
+				"И945"
+			],
+			"teacherId": 3,
+			"disciplineName": "пр МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 2,
+			"lessonDay": 8,
+			"place": "218*"
+		},
+		{
+			"studentGroupNames": [
+				"И945"
+			],
+			"teacherId": 4,
+			"disciplineName": "пр БАЗЫ ДАННЫХ",
+			"lessonNumber": 3,
+			"lessonDay": 8,
+			"place": "256*"
+		},
+		{
+			"studentGroupNames": [
+				"И946"
+			],
+			"teacherId": 4,
+			"disciplineName": "пр БАЗЫ ДАННЫХ",
+			"lessonNumber": 2,
+			"lessonDay": 8,
+			"place": "256*"
+		},
+		{
+			"studentGroupNames": [
+				"И946"
+			],
+			"teacherId": 3,
+			"disciplineName": "пр МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 3,
+			"lessonDay": 8,
+			"place": "218*"
+		},
+		{
+			"studentGroupNames": [
+				"И945",
+				"И946"
+			],
+			"teacherId": 2,
+			"disciplineName": "лаб БЖД",
+			"lessonNumber": 3,
+			"lessonDay": 9,
+			"place": "445"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522",
+				"И945",
+				"И946"
+			],
+			"teacherId": 2,
+			"disciplineName": "лек БЖД",
+			"lessonNumber": 3,
+			"lessonDay": 10,
+			"place": "313*"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522"
+			],
+			"teacherId": 3,
+			"disciplineName": "лек МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 4,
+			"lessonDay": 10,
+			"place": "325*"
+		},
+		{
+			"studentGroupNames": [
+				"О521"
+			],
+			"teacherId": 3,
+			"disciplineName": "пр МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 1,
+			"lessonDay": 11,
+			"place": "218*"
+		},
+		{
+			"studentGroupNames": [
+				"О521"
+			],
+			"teacherId": 4,
+			"disciplineName": "пр БАЗЫ ДАННЫХ",
+			"lessonNumber": 3,
+			"lessonDay": 11,
+			"place": "256*"
+		},
+		{
+			"studentGroupNames": [
+				"О522"
+			],
+			"teacherId": 4,
+			"disciplineName": "пр БАЗЫ ДАННЫХ",
+			"lessonNumber": 2,
+			"lessonDay": 11,
+			"place": "256*"
+		},
+		{
+			"studentGroupNames": [
+				"О522"
+			],
+			"teacherId": 3,
+			"disciplineName": "пр МЕТ.КРОСС.ТРАНСЛ.",
+			"lessonNumber": 3,
+			"lessonDay": 11,
+			"place": "218*"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522"
+			],
+			"teacherId": 5,
+			"disciplineName": "лек ПРЕДСТ.ЗНАН.В ИС",
+			"lessonNumber": 2,
+			"lessonDay": 12,
+			"place": "318"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522",
+				"И945",
+				"И946"
+			],
+			"teacherId": 3,
+			"disciplineName": "лек БАЗЫ ДАННЫХ",
+			"lessonNumber": 3,
+			"lessonDay": 12,
+			"place": "315"
+		},
+		{
+			"studentGroupNames": [
+				"О521",
+				"О522"
+			],
+			"teacherId": 4,
+			"disciplineName": "лек РАЗР.И АН.ТРЕБ.",
+			"lessonNumber": 4,
+			"lessonDay": 12,
+			"place": "312"
+		},
+		{
+			"studentGroupNames": [
+				"И945",
+				"И946"
+			],
+			"teacherId": 5,
+			"disciplineName": "лек ПРЕДСТ.ЗНАН.В ИС",
+			"lessonNumber": 4,
+			"lessonDay": 12,
+			"place": "318"
+		}
+	],
+	"teachers": [
+		{
+			"id": 1,
+			"fullname": "Потапов П.А."
+		},
+		{
+			"id": 2,
+			"fullname": "Фомин А.Р."
+		},
+		{
+			"id": 3,
+			"fullname": "Пестова А.Г."
+		},
+		{
+			"id": 4,
+			"fullname": "Мартынова Р.А."
+		},
+		{
+			"id": 5,
+			"fullname": "Мухина М.П."
+		}
+	],
+	"disciplines": [
+		{
+			"name": "пр МЕТ.КРОСС.ТРАНСЛ."
+		},
+		{
+			"name": "пр МАТ.СТАТИСТ.И СП"
+		},
+		{
+			"name": "пр РАЗР.И АН.ТРЕБ."
+		},
+		{
+			"name": "лек МЕТ.КРОСС.ТРАНСЛ."
+		},
+		{
+			"name": "лек МАТ.СТАТИСТ.И СП"
+		},
+		{
+			"name": "лек РАЗР.И АН.ТРЕБ."
+		},
+		{
+			"name": "пр БАЗЫ ДАННЫХ"
+		},
+		{
+			"name": "лек БАЗЫ ДАННЫХ"
+		},
+		{
+			"name": "пр ПРЕДСТ.ЗНАН.В ИС"
+		},
+		{
+			"name": "лек ПРЕДСТ.ЗНАН.В ИС"
+		},
+		{
+			"name": "лаб БЖД"
+		},
+		{
+			"name": "лек БЖД"
+		}
+	],
+	"groups": [
+		{
+			"name": "О521"
+		},
+		{
+			"name": "О522"
+		},
+		{
+			"name": "И945"
+		},
+		{
+			"name": "И946"
+		}
+	]
+}

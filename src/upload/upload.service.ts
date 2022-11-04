@@ -58,4 +58,34 @@ export class UploadService {
 			}
 		}
 	}
+
+	async fillWithStudentGroups(groups: string): Promise<void> {
+		try {
+			const result = JSON.parse(groups);
+
+			for (const group of result) {
+				const _group = await this.scheduleService.getStudentGroupByName(group.name);
+				await this.rolesService.createStudents(
+					group.students.map(student => ({
+						...student,
+						studentGroupId: _group.id,
+					}))
+				);
+			}
+			// await this.rolesService.createTeachers(result.teachers);
+		} catch (error) {
+			if (error instanceof SyntaxError) {
+				throw new BadRequestException([
+					'file format must be json',
+					'the contents of the file must be formatted according to the standard schema',
+				]);
+			} else {
+				throw new BadRequestException([
+					'data should not contain duplicates with existing ones',
+					'all relationships between data must be valid',
+					'data must be of the correct types',
+				]);
+			}
+		}
+	}
 }

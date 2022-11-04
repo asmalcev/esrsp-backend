@@ -14,15 +14,8 @@ export class UploadController {
 	@Post('/timetable/voenmeh/xml')
 	@UseInterceptors(FileInterceptor('file'))
 	async uploadVoenmehTimetable(@UploadedFile() file: Express.Multer.File) {
-		await this.uploadService.fillWithVoenmehTimetable(file.buffer.toString());
-		return {
-			msg: 'success',
-		};
-	}
-
-	@Post('/removeall')
-	async removeAll() {
 		await this.uploadService.removeAll();
+		await this.uploadService.fillWithVoenmehTimetable(file.buffer.toString());
 		return {
 			msg: 'success',
 		};
@@ -31,7 +24,17 @@ export class UploadController {
 	@Post('/timetable/json')
 	@UseInterceptors(FileInterceptor('file'))
 	async uploadTimetable(@UploadedFile() file: Express.Multer.File) {
+		await this.uploadService.removeAll();
 		await this.uploadService.fillWithTimetable(file.buffer.toString());
+		return {
+			msg: 'success',
+		};
+	}
+
+	@Post('/groups/json')
+	@UseInterceptors(FileInterceptor('file'))
+	async uploadStudentGroups(@UploadedFile() file: Express.Multer.File) {
+		await this.uploadService.fillWithStudentGroups(file.buffer.toString());
 		return {
 			msg: 'success',
 		};

@@ -44,6 +44,12 @@ export class RolesService {
 		});
 	}
 
+	async createStudents(studentDtos: StudentDto[]): Promise<void> {
+		for (const studentDto of studentDtos) {
+			await this.createStudent(studentDto);
+		}
+	}
+
 	async getStudent(
 		id: number,
 		other?: Omit<FindOneOptions<Student>, 'where'>,

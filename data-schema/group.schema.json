@@ -1,9 +1,0 @@
-{
-	"name": "string",
-	"students": [
-		{
-			"fullname": "string",
-			"recordBook": "string"
-		}
-	]
-}
