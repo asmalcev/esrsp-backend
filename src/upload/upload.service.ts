@@ -47,7 +47,7 @@ export class UploadService {
 			if (error instanceof SyntaxError) {
 				throw new BadRequestException([
 					'file format must be json',
-					'the contents of the file must be formatted according to the standard rules',
+					'the contents of the file must be formatted according to the standard schema',
 				]);
 			} else {
 				throw new BadRequestException([

@@ -1,0 +1,30 @@
+{
+	"lessons": [
+		{
+			"teacherId?": "number",
+			"disciplineName": "string",
+			"place": "string",
+			"studentGroupNames": [
+				"string"
+			],
+			"lessonNumber": "number",
+			"lessonDay": "number"
+		}
+	],
+	"teachers:": [
+		{
+			"id": "number",
+			"fullname": "string"
+		}
+	],
+	"disciplines": [
+		{
+			"name": "string"
+		}
+	],
+	"groups": [
+		{
+			"name": "string"
+		}
+	]
+}
