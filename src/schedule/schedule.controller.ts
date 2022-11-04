@@ -3,12 +3,17 @@ import {
 	Controller,
 	Delete,
 	Get,
+	NotFoundException,
 	Param,
 	ParseIntPipe,
 	Post,
 	Put,
+	Session,
+	UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { WithMsg } from 'src/common-types';
+import { UserRole } from 'src/users/dto/user.dto';
 import { DisciplineDto } from './dto/discipline.dto';
 import { LessonDto } from './dto/lesson.dto';
 import { StudentGroupDto } from './dto/student-group.dto';
@@ -28,7 +33,9 @@ type LessonRemoveResponse = WithMsg & {};
 
 @Controller('schedule')
 export class ScheduleController {
-	constructor(private readonly scheduleService: ScheduleService) {}
+	constructor(
+		private readonly scheduleService: ScheduleService,
+	) {}
 
 	/*
 	 * Student Group
@@ -138,5 +145,36 @@ export class ScheduleController {
 		return {
 			msg: 'success',
 		};
+	}
+
+	/*
+	 * Schedule
+	 */
+	@Get('/teacher/:id')
+	async getTeacherSchedule(
+		@Param('id', ParseIntPipe) id: number,
+	) {
+		return await this.scheduleService.getTeacherSchedule(id);
+	}
+
+	@Get('/student/:id')
+	async getStudentSchedule(
+		@Param('id', ParseIntPipe) id: number,
+	) {
+		return await this.scheduleService.getStudentSchedule(id);
+	}
+
+	@Get('/')
+	@UseGuards(AuthGuard)
+	async getUserSchedule(
+		@Session() session: Record<string, any>,
+	) {
+		if (session.user.role === UserRole.STUDENT) {
+			return await this.scheduleService.getStudentSchedule(session.user.roleId);
+		}
+		if (session.user.role === UserRole.TEACHER) {
+			return await this.scheduleService.getTeacherSchedule(session.user.roleId);
+		}
+		throw new NotFoundException('no schedule for your account type');
 	}
 }

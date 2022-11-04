@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from 'src/roles/entity/teacher';
 import { RolesService } from 'src/roles/roles.service';
-import { InsertResult, Repository } from 'typeorm';
+import { InsertResult, IsNull, Not, Repository } from 'typeorm';
 import { DisciplineDto } from './dto/discipline.dto';
 import { LessonDto, LessonWithNamesDto } from './dto/lesson.dto';
 import { StudentGroupDto } from './dto/student-group.dto';
@@ -121,7 +121,8 @@ export class ScheduleService {
 			const discipline = await this.getDisciplineByName(
 				lessonDto.disciplineName,
 			);
-			const teacher = await this.rolesService.getTeacher(lessonDto.teacherId);
+
+			const teacher = lessonDto.teacherId ? await this.rolesService.getTeacher(lessonDto.teacherId) : null;
 
 			await this.lessonsRepository.save({
 				...lessonDto,
@@ -133,7 +134,16 @@ export class ScheduleService {
 	}
 
 	async getLesson(id: number): Promise<Lesson> {
-		const lesson = await this.lessonsRepository.findOne({ where: { id } });
+		const lesson = await this.lessonsRepository.findOne({
+			where: {
+				id
+			},
+			relations: {
+				studentGroups: true,
+				teacher: true,
+				discipline: true,
+			}
+		});
 
 		if (!lesson) {
 			throw new NotFoundException('lesson is not found');
@@ -223,5 +233,55 @@ export class ScheduleService {
 
 	async removeAllDisciplines(): Promise<void> {
 		this.disciplinesRepository.delete({});
+	}
+
+	/*
+	 * Schedule
+	 */
+	async getTeacherSchedule(
+		id: number,
+	) {
+		return await this.lessonsRepository.find({
+			where: {
+				teacher: { id },
+			},
+			relations: {
+				teacher: true,
+				discipline: true,
+				studentGroups: true,
+			},
+			order: {
+				lessonDay: 'ASC',
+				lessonNumber: 'ASC',
+			}
+		});
+	}
+
+	async getStudentSchedule(
+		id: number,
+	) {
+		/*
+		 * Temporary solution while there are not students
+		 */
+		// const student = await this.rolesService.getStudent(id, {
+		// 	relations: {
+		// 		studentGroup: true,
+		// 	},
+		// });
+
+		return (await this.lessonsRepository.find({
+			where: {
+				studentGroups: { id },
+			},
+			relations: {
+				teacher: true,
+				discipline: true,
+				studentGroups: true,
+			},
+			order: {
+				lessonDay: 'ASC',
+				lessonNumber: 'ASC',
+			}
+		})).length;
 	}
 }

@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentGroup } from 'src/schedule/entity/student-group';
 import { ScheduleService } from 'src/schedule/schedule.service';
-import { InsertResult, Repository } from 'typeorm';
+import { FindOneOptions, InsertResult, Repository } from 'typeorm';
 import { StudentDto } from './dto/student.dto';
 import { TeacherDto } from './dto/teacher.dto';
 import { Student } from './entity/student';
@@ -44,8 +44,14 @@ export class RolesService {
 		});
 	}
 
-	async getStudent(id: number): Promise<Student> {
-		const student = await this.studentRepository.findOne({ where: { id } });
+	async getStudent(
+		id: number,
+		other?: Omit<FindOneOptions<Student>, 'where'>,
+	): Promise<Student> {
+		const student = await this.studentRepository.findOne({
+			where: { id },
+			...other,
+		});
 
 		if (!student) {
 			throw new NotFoundException('student is not found');
@@ -101,8 +107,14 @@ export class RolesService {
 			.execute();
 	}
 
-	async getTeacher(id: number): Promise<Teacher> {
-		const teacher = await this.teacherRepository.findOne({ where: { id } });
+	async getTeacher(
+		id: number,
+		other?: Omit<FindOneOptions<Teacher>, 'where'>,
+	): Promise<Teacher> {
+		const teacher = await this.teacherRepository.findOne({
+			where: { id },
+			...other,
+		});
 
 		if (!teacher) {
 			throw new NotFoundException('teacher is not found');
