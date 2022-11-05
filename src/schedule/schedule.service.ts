@@ -19,6 +19,7 @@ import { StudentGroupDto } from './dto/student-group.dto';
 import { Discipline } from './entity/discipline';
 import { Lesson } from './entity/lesson';
 import { StudentGroup } from './entity/student-group';
+import { TeacherStudentGroups } from './schedule.type';
 
 @Injectable()
 export class ScheduleService {
@@ -342,13 +343,12 @@ export class ScheduleService {
 		});
 	}
 
-	// async getTeacherStudentGroups(id: number): Promise<StudentGroup[]> {
-	async getTeacherStudentGroups(teacherId: number): Promise<any> {
+	async getTeacherStudentGroups(teacherId: number): Promise<TeacherStudentGroups[]> {
 		return this.lessonsRepository.query(`
 			select distinct
 				"D"."name" as "discipline",
 				"D"."id" as "disciplineId",
-				"SG"."name" as "studentGroupName",
+				"SG"."name" as "studentGroup",
 				"SG"."id" as "studentGroupId"
 			from "lesson" as "L"
 			right join "lesson_student_groups_student-group" as "LSG" on "LSG"."lessonId" = "L"."id"
@@ -356,6 +356,21 @@ export class ScheduleService {
 			join "discipline" as "D" on "D"."id" = "L"."disciplineId"
 			where "L"."teacherId" = ${teacherId}
 			order by "D"."id", "SG"."id"
+		`);
+	}
+
+	async getStudentDisciplines(studentId: number): Promise<any> {
+		return this.lessonsRepository.query(`
+			select distinct
+				"D"."name" as "discipline",
+				"D"."id" as "disciplineId"
+			from "lesson_student_groups_student-group" as "LSG"
+			join "lesson" as "L" on "L"."id" = "LSG"."lessonId"
+			join "discipline" as "D" on "D"."id" = "L"."disciplineId"
+			where "LSG"."studentGroupId" = (
+				select "S"."studentGroupId" from "student" as "S"
+				where "S"."id" = ${studentId}
+			)
 		`);
 	}
 }

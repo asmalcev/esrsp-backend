@@ -22,6 +22,7 @@ import { Discipline } from './entity/discipline';
 import { Lesson } from './entity/lesson';
 import { StudentGroup } from './entity/student-group';
 import { ScheduleService } from './schedule.service';
+import { TeacherStudentGroups } from './schedule.type';
 
 @Controller('schedule')
 export class ScheduleController {
@@ -172,8 +173,14 @@ export class ScheduleController {
 	@Get('/teacher/:id/groups')
 	async getTeacherStudentGroups(
 		@Param('id', ParseIntPipe) id: number,
-		// ): Promise<StudentGroup[]> {
-	): Promise<any> {
+	): Promise<TeacherStudentGroups[]> {
 		return await this.scheduleService.getTeacherStudentGroups(id);
+	}
+
+	@Get('/student/:id/disciplines')
+	async getStudentDisciplines(
+		@Param('id', ParseIntPipe) id: number,
+	): Promise<any> {
+		return await this.scheduleService.getStudentDisciplines(id);
 	}
 }
