@@ -343,7 +343,9 @@ export class ScheduleService {
 		});
 	}
 
-	async getTeacherStudentGroups(teacherId: number): Promise<TeacherStudentGroups[]> {
+	async getTeacherStudentGroups(
+		teacherId: number,
+	): Promise<TeacherStudentGroups[]> {
 		return this.lessonsRepository.query(`
 			select distinct
 				"D"."name" as "discipline",

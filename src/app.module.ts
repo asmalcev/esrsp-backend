@@ -10,6 +10,7 @@ import { RolesModule } from './roles/roles.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { PerformanceModule } from './performance/performance.module';
 import { UploadModule } from './upload/upload.module';
+import { GenerateModule } from './generate/generate.module';
 
 @Module({
 	imports: [
@@ -29,6 +30,7 @@ import { UploadModule } from './upload/upload.module';
 		ScheduleModule,
 		PerformanceModule,
 		UploadModule,
+		GenerateModule,
 	],
 	controllers: [],
 	providers: [],

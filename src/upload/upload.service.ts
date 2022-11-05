@@ -75,7 +75,6 @@ export class UploadService {
 					})),
 				);
 			}
-			// await this.rolesService.createTeachers(result.teachers);
 		} catch (error) {
 			if (error instanceof SyntaxError) {
 				throw new BadRequestException([

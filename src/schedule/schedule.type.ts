@@ -3,4 +3,4 @@ export type TeacherStudentGroups = {
 	disciplineId: number;
 	studentGroup: string;
 	studentGroupId: number;
-}
+};
