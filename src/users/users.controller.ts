@@ -67,7 +67,7 @@ export class UsersController {
 	 * Temporary Test Methods
 	 */
 	@Get('/')
-	@UseGuards(AuthGuard)
+	// @UseGuards(AuthGuard)
 	async getAll(): Promise<User[]> {
 		return this.usersService.getAllUsers();
 	}

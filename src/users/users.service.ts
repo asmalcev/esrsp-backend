@@ -23,7 +23,7 @@ export class UsersService {
 	) {}
 
 	async createUser(userDto: UserDto): Promise<User> {
-		const user = await this.getUserByUsername(userDto.username);
+		const user = await this.getUserByUsername(userDto.username, false);
 
 		if (user) {
 			throw new BadRequestException('selected username is already taken');
@@ -45,10 +45,13 @@ export class UsersService {
 		return user;
 	}
 
-	async getUserByUsername(username: string): Promise<User> {
+	async getUserByUsername(
+		username: string,
+		throwErr: boolean = true
+	): Promise<User> {
 		const user = await this.usersRepository.findOne({ where: { username } });
 
-		if (!user) {
+		if (throwErr && !user) {
 			throw new NotFoundException('user is not found');
 		}
 

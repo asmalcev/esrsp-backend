@@ -371,6 +371,7 @@ export class ScheduleService {
 				select "S"."studentGroupId" from "student" as "S"
 				where "S"."id" = ${studentId}
 			)
+			order by "D"."id"
 		`);
 	}
 }
