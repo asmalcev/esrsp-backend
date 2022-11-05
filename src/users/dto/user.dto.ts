@@ -12,10 +12,10 @@ export enum UserRole {
 export class UserDto extends AuthUserDto {
 	@IsOptional()
 	@IsEnum(UserRole)
-	role: UserRole;
+	role?: UserRole;
 
 	@IsOptional()
 	@IsInt()
 	@Min(0)
-	roleId: number;
+	roleId?: number;
 }

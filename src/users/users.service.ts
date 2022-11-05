@@ -4,8 +4,9 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { appConfig } from 'src/config/app.config';
 import { Repository } from 'typeorm';
-import { UserDto } from './dto/user.dto';
+import { UserDto, UserRole } from './dto/user.dto';
 import { User } from './entity/user';
 
 const SelectFindOptions = {
@@ -20,7 +21,24 @@ export class UsersService {
 	constructor(
 		@InjectRepository(User)
 		private readonly usersRepository: Repository<User>,
-	) {}
+	) {
+		const username = appConfig.getValue('SUPERUSER_USERNAME');
+		const password = appConfig.getValue('SUPERUSER_PASSWORD');
+
+		this.createSuperUser(username, password);
+	}
+
+	async createSuperUser(username: string, password: string) {
+		const superuser = await this.getUserByUsername(username, false);
+
+		if (!superuser) {
+			await this.createUser({
+				username,
+				password,
+				role: UserRole.ADMIN,
+			});
+		}
+	}
 
 	async createUser(userDto: UserDto): Promise<User> {
 		const user = await this.getUserByUsername(userDto.username, false);

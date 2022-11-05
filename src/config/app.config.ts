@@ -23,4 +23,6 @@ export const appConfig = new AppConfig(process.env, [
 	'POSTGRES_DATABASE',
 	'POSTGRES_PORT',
 	'SESSION_SECRET',
+	'SUPERUSER_USERNAME',
+	'SUPERUSER_PASSWORD',
 ]);
