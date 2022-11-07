@@ -46,9 +46,14 @@ export class GenerateService {
 		});
 
 		for (const teacher of teachers) {
-			let teacherLogin = transliterate(teacher.fullname.replace(/[ .]/g, '')).toLowerCase();
+			let teacherLogin = transliterate(
+				teacher.fullname.replace(/[ .]/g, ''),
+			).toLowerCase();
 
-			const alreadyUser = await this.usersService.getUserByUsername(teacherLogin, false);
+			const alreadyUser = await this.usersService.getUserByUsername(
+				teacherLogin,
+				false,
+			);
 			if (alreadyUser) {
 				teacherLogin += teacher.id;
 			}
