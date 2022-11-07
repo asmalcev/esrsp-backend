@@ -25,4 +25,5 @@ export const appConfig = new AppConfig(process.env, [
 	'SESSION_SECRET',
 	'SUPERUSER_USERNAME',
 	'SUPERUSER_PASSWORD',
+	'PORT',
 ]);
