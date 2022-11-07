@@ -7,8 +7,7 @@ export class GenerateController {
 	constructor(private readonly generateService: GenerateService) {}
 
 	@Get('/users')
-	// async generateUsers(): Promise<TeacherStudentUsers> {
-	async generateUsers(): Promise<any> {
+	async generateUsers(): Promise<TeacherStudentUsers> {
 		return this.generateService.generateUsers();
 	}
 }
