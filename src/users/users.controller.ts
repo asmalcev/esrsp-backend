@@ -9,7 +9,6 @@ import {
 	Put,
 	Delete,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { WithMsg } from 'src/common-types';
 import { Roles } from 'src/roles/roles.guard';
@@ -28,13 +27,7 @@ export class UsersController {
 
 	@Post('/signup')
 	async signup(@Body() userDto: UserDto): Promise<UserSignupResponse> {
-		const saltOrRounds = 10;
-		const hashedPassword = await bcrypt.hash(userDto.password, saltOrRounds);
-
-		const { password, ...result } = await this.usersService.createUser({
-			...userDto,
-			password: hashedPassword,
-		});
+		const { password, ...result } = await this.usersService.createUser(userDto);
 
 		return {
 			msg: 'User successfully registered',

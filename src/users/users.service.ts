@@ -4,8 +4,9 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { appConfig } from 'src/config/app.config';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { appConfig } from 'src/config/app.config';
 import { UserDto, UserRole } from './dto/user.dto';
 import { User } from './entity/user';
 
@@ -46,6 +47,9 @@ export class UsersService {
 		if (user) {
 			throw new BadRequestException('selected username is already taken');
 		}
+
+		const saltOrRounds = 10;
+		userDto.password = await bcrypt.hash(userDto.password, saltOrRounds);
 
 		return this.usersRepository.save({ ...userDto });
 	}

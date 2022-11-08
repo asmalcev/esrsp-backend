@@ -18,6 +18,7 @@ export class AuthService {
 	async validateUser(authUserDto: AuthUserDto): Promise<ValidatedUser> {
 		const user = await this.usersService.getUserByUsername(
 			authUserDto.username,
+			false
 		);
 
 		const NotFoundMsg = `Couldn't find user with given username and password`;

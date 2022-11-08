@@ -26,15 +26,17 @@ export class GenerateService {
 		});
 
 		for (const student of students) {
+			const password = generatePassword(16);
 			const user: User = await this.usersService.createUser({
 				username: transliterate(student.recordBook).toLowerCase(),
-				password: generatePassword(16),
+				password,
 				role: UserRole.STUDENT,
 				roleId: student.id,
 			});
 
 			result.students.push({
 				...user,
+				password,
 				roleData: student,
 			});
 		}
@@ -46,6 +48,7 @@ export class GenerateService {
 		});
 
 		for (const teacher of teachers) {
+			const password = generatePassword(16);
 			let teacherLogin = transliterate(
 				teacher.fullname.replace(/[ .]/g, ''),
 			).toLowerCase();
@@ -60,13 +63,14 @@ export class GenerateService {
 
 			const user: User = await this.usersService.createUser({
 				username: teacherLogin,
-				password: generatePassword(16),
+				password: password,
 				role: UserRole.TEACHER,
 				roleId: teacher.id,
 			});
 
 			result.teachers.push({
 				...user,
+				password,
 				roleData: teacher,
 			});
 		}
