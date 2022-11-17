@@ -16,10 +16,12 @@ import { successResponse } from 'src/common-responses';
 import { WithMsg } from 'src/common-types';
 import { UserRole } from 'src/users/dto/user.dto';
 import { DisciplineDto } from './dto/discipline.dto';
+import { LessonTimeDto } from './dto/lesson-time.dto';
 import { LessonDto } from './dto/lesson.dto';
 import { StudentGroupDto } from './dto/student-group.dto';
 import { Discipline } from './entity/discipline';
 import { Lesson } from './entity/lesson';
+import { LessonTime } from './entity/lesson-time';
 import { StudentGroup } from './entity/student-group';
 import { ScheduleService } from './schedule.service';
 import { TeacherStudentGroups } from './schedule.type';
@@ -138,6 +140,39 @@ export class ScheduleController {
 		this.scheduleService.removeLesson(id);
 		return successResponse;
 	}
+
+	/*
+	 * LessonTime
+	 */
+		@Get('/lesson-time/:id')
+		async getLessonTime(@Param('id', ParseIntPipe) id: number): Promise<LessonTime> {
+			return this.scheduleService.getLessonTime(id);
+		}
+	
+		@Get('/lesson-time')
+		async getLessonsTimes(): Promise<LessonTime[]> {
+			return this.scheduleService.getLessonsTimes();
+		}
+	
+		@Post('/lesson-time')
+		async createLessonTime(@Body() lessonTimeDto: LessonTimeDto): Promise<LessonTime> {
+			return this.scheduleService.createLessonTime(lessonTimeDto);
+		}
+	
+		@Put('/lesson-time/:id')
+		async updateLessonTime(
+			@Param('id', ParseIntPipe) id: number,
+			@Body() lessonTimeDto: Partial<LessonTimeDto>,
+		): Promise<WithMsg> {
+			this.scheduleService.updateLessonTime(id, lessonTimeDto);
+			return successResponse;
+		}
+	
+		@Delete('/lesson-time/:id')
+		async removeLessonTime(@Param('id', ParseIntPipe) id: number): Promise<WithMsg> {
+			this.scheduleService.removeLessonTime(id);
+			return successResponse;
+		}
 
 	/*
 	 * Schedule

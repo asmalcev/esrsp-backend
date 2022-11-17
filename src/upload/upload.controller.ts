@@ -54,4 +54,19 @@ export class UploadController {
 		await this.uploadService.fillWithStudentGroups(file.buffer.toString());
 		return successResponse;
 	}
+
+	@Post('/timetable/lessons-times')
+	@UseInterceptors(FileInterceptor('file'))
+	async uploadLessonsTimes(
+		@UploadedFile() file: Express.Multer.File,
+	): Promise<WithMsg> {
+		if (!file.buffer) {
+			throw new BadRequestException('empty file');
+		}
+
+		await this.uploadService.removeAllLessonsTimes();
+		await this.uploadService.fillWithLessonsTimes(file.buffer.toString());
+
+		return successResponse;
+	}
 }

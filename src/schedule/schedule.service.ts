@@ -14,10 +14,12 @@ import {
 	Repository,
 } from 'typeorm';
 import { DisciplineDto } from './dto/discipline.dto';
+import { LessonTimeDto } from './dto/lesson-time.dto';
 import { LessonDto, LessonWithNamesDto } from './dto/lesson.dto';
 import { StudentGroupDto } from './dto/student-group.dto';
 import { Discipline } from './entity/discipline';
 import { Lesson } from './entity/lesson';
+import { LessonTime } from './entity/lesson-time';
 import { StudentGroup } from './entity/student-group';
 import { TeacherStudentGroups } from './schedule.type';
 
@@ -30,6 +32,8 @@ export class ScheduleService {
 		private readonly lessonsRepository: Repository<Lesson>,
 		@InjectRepository(Discipline)
 		private readonly disciplinesRepository: Repository<Discipline>,
+		@InjectRepository(LessonTime)
+		private readonly lessonTimeRepository: Repository<LessonTime>,
 		@Inject(forwardRef(() => RolesService))
 		private readonly rolesService: RolesService,
 	) {}
@@ -106,15 +110,15 @@ export class ScheduleService {
 		id: number,
 		studentGroupDto: Partial<StudentGroupDto>,
 	): Promise<void> {
-		this.studentGroupsRepository.update({ id }, { ...studentGroupDto });
+		await this.studentGroupsRepository.update({ id }, { ...studentGroupDto });
 	}
 
 	async removeStudentGroup(id: number): Promise<void> {
-		this.studentGroupsRepository.delete({ id });
+		await this.studentGroupsRepository.delete({ id });
 	}
 
 	async removeAllStudentGroups(): Promise<void> {
-		this.studentGroupsRepository.delete({});
+		await this.studentGroupsRepository.delete({});
 	}
 
 	/*
@@ -220,15 +224,15 @@ export class ScheduleService {
 			other.teacher = await this.rolesService.getTeacher(lessonDto.teacherId);
 		}
 
-		this.lessonsRepository.update({ id }, { ...lessonDto, ...other });
+		await this.lessonsRepository.update({ id }, { ...lessonDto, ...other });
 	}
 
 	async removeLesson(id: number): Promise<void> {
-		this.lessonsRepository.delete({ id });
+		await this.lessonsRepository.delete({ id });
 	}
 
 	async removeAllLessons(): Promise<void> {
-		this.lessonsRepository.delete({});
+		await this.lessonsRepository.delete({});
 	}
 
 	/*
@@ -293,15 +297,64 @@ export class ScheduleService {
 		id: number,
 		disciplineDto: Partial<DisciplineDto>,
 	): Promise<void> {
-		this.disciplinesRepository.update({ id }, { ...disciplineDto });
+		await this.disciplinesRepository.update({ id }, { ...disciplineDto });
 	}
 
 	async removeDiscipline(id: number): Promise<void> {
-		this.disciplinesRepository.delete({ id });
+		await this.disciplinesRepository.delete({ id });
 	}
 
 	async removeAllDisciplines(): Promise<void> {
-		this.disciplinesRepository.delete({});
+		await this.disciplinesRepository.delete({});
+	}
+
+	/*
+	 * Lesson Time
+	 */
+	async createLessonTime(lessonTimeDto: LessonTimeDto): Promise<LessonTime> {
+		return await this.lessonTimeRepository.save({ ...lessonTimeDto });
+	}
+
+	async createLessonsTimes(
+		lessonTimeDtos: LessonTimeDto[],
+	): Promise<InsertResult> {
+		return await this.lessonTimeRepository
+			.createQueryBuilder()
+			.insert()
+			.into(LessonTime)
+			.values(lessonTimeDtos)
+			.execute();
+	}
+
+	async getLessonTime(id: number): Promise<LessonTime> {
+		const lessonTime: LessonTime = await this.lessonTimeRepository.findOne({
+			where: { id },
+		});
+
+		if (!lessonTime) {
+			throw new NotFoundException('lesson time is not found');
+		}
+
+		return lessonTime;
+	}
+
+	async getLessonsTimes(): Promise<LessonTime[]> {
+		return await this.lessonTimeRepository.find();
+	}
+
+	async updateLessonTime(
+		id:number,
+		lessonTimeDto: Partial<LessonTimeDto>,
+	): Promise<void> {
+		await this.lessonTimeRepository.update({ id }, { ...lessonTimeDto });
+	}
+
+	async removeLessonTime(id: number): Promise<void> {
+		await this.lessonTimeRepository.delete({ id });
+	}
+
+	async removeAllLessonsTimes(): Promise<void> {
+		await this.lessonTimeRepository.delete({});
 	}
 
 	/*
