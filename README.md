@@ -1,73 +1,190 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# ESRSP BACKEND
+Серверная часть приложения электронного журнала.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Стек
+- Nest
+- TS
+- TypeOrm
+- PostgreSQL
+- Docker
+- Redis
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Что умеет
 
-## Installation
 
-```bash
-$ npm install
-```
+### Аутентификация
+POST: `auth/login`
+- войти в аккаунт
+- необходимо передать логин и пароль от аккаунта
+- создаст сессию
 
-## Running the app
+POST: `auth/logout`
+- удаляет сессию
 
-```bash
-# development
-$ npm run start
+GET: `auth`
+- проверить наличие сессии
 
-# watch mode
-$ npm run start:dev
+### Роли
 
-# production mode
-$ npm run start:prod
-```
 
-## Test
+#### Студент
+GET: `roles/student/:id`
+- получить студента по id
 
-```bash
-# unit tests
-$ npm run test
+GET: `roles/student`
+- получить всех студентов
 
-# e2e tests
-$ npm run test:e2e
+POST: `roles/student`
+- создать нового студента
 
-# test coverage
-$ npm run test:cov
-```
+PUT: `roles/student/:id`
+- обновить данные студента по id
 
-## Support
+DELETE: `roles/student/:id`
+- удалить студента по id
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
+#### Преподаватель
+GET: `roles/teacher/:id`
+- получить преподавателя по id
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+GET: `roles/teacher`
+- получить всех преподавателей
 
-## License
+POST: `roles/teacher`
+- создать нового преподавателя
 
-Nest is [MIT licensed](LICENSE).
+PUT: `roles/teacher/:id`
+- обновить данные преподавателя по id
+
+DELETE: `roles/teacher/:id`
+- удалить преподавателя по id
+
+### Расписание
+#### Группа студентов
+GET: `schedule/group/:id`
+- получить группу студентов по id
+
+GET: `schedule/group`
+- получить все группы студентов
+
+POST: `schedule/group`
+- создать новую группу
+
+PUT: `schedule/group/:id`
+- обновить данные группы по id
+
+DELETE: `schedule/group/:id`
+- удалить группу по id
+
+
+#### Дисциплина
+GET: `schedule/discipline/:id`
+- получить дисциплину по id
+
+GET: `schedule/discipline`
+- получить все дисциплины
+
+POST: `schedule/discipline`
+- создать новую дисциплину
+
+PUT: `schedule/discipline/:id`
+- обновить данные дисциплины по id
+
+DELETE: `schedule/discipline/:id`
+- удалить дисциплину по id
+
+
+#### Урок
+GET: `schedule/lesson/:id`
+- получить урок по id
+
+GET: `schedule/lesson`
+- получить все уроки
+
+POST: `schedule/lesson`
+- создать новый урок
+
+PUT: `schedule/lesson/:id`
+- обновить данные урока по id
+
+DELETE: `schedule/lesson/:id`
+- удалить урок по id
+
+
+#### Время урока
+GET: `schedule/lesson-time/:id`
+- получить время урок по id
+
+GET: `schedule/lesson-time`
+- получить все времена уроков
+
+POST: `schedule/lesson-time`
+- создать новое время урока
+
+PUT: `schedule/lesson-time/:id`
+- обновить данные времени урока по id
+
+DELETE: `schedule/lesson-time/:id`
+- удалить время урока по id
+
+
+#### Расписание
+GET: `schedule/teacher/:id`
+- получить расписание преподавателя по id
+
+GET: `schedule/student/:id`
+- получить расписание студента по id
+
+GET: `schedule`
+- получить свое расписание (для авторизованных пользователей с типом роли: Студент, Преподаватель)
+
+GET: `schedule/teacher/:id/groups`
+- получить список групп преподавателя
+
+GET: `schedule/student/:id/disciplines`
+- получить список дисциплин студента
+
+
+### Успеваемость
+GET: `performance/:id`
+- получить успеваемость по id
+
+GET: `performance`
+- получить всю успеваемость
+
+POST: `performance`
+- создать новую успеваемость
+
+PUT: `performance/:id`
+- обновить данные успеваемости по id
+
+DELETE: `performance/:id`
+- удалить успеваемость по id
+
+
+### Пользователи
+POST: `users/signup`
+- зарегистрировать нового пользователя
+
+PUT: `users/:id`
+- обновить данные пользователя
+
+DELETE: `users/:id`
+- удалить пользователя
+
+
+### Загрузка
+POST: `upload/timetable/voenmeh/xml`
+- загрузить расписание в формате XML по схеме ВОЕНМЕХа
+
+POST: `upload/timetable/json`
+- загрузить расписание в формате JSON по стандартной схеме
+
+POST: `upload/timetable/lessons-times`
+- загрузить промежутки уроков (в формате JSON по стандартной схеме)
+
+POST: `upload/groups/json`
+- загрузить список групп в формате JSON по стандартной схеме
