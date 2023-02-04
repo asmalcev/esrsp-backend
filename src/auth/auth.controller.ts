@@ -2,6 +2,7 @@ import {
 	Body,
 	Controller,
 	Get,
+	HttpCode,
 	Post,
 	Session,
 	UseGuards,
@@ -17,6 +18,7 @@ export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
 	@Post('/login')
+	@HttpCode(200)
 	async login(
 		@Body() authUserDto: AuthUserDto,
 		@Session() session: Record<string, any>,
