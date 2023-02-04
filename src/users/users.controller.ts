@@ -18,8 +18,8 @@ import { UsersService } from './users.service';
 
 type UserSignupResponse = WithMsg & Omit<User, 'password'>;
 
-type UserUpdateResponse = WithMsg & {};
-type UserRemoveResponse = WithMsg & {};
+type UserUpdateResponse = WithMsg;
+type UserRemoveResponse = WithMsg;
 
 @Controller('users')
 export class UsersController {

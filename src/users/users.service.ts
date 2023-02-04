@@ -67,10 +67,7 @@ export class UsersService {
 		return user;
 	}
 
-	async getUserByUsername(
-		username: string,
-		throwErr: boolean = true,
-	): Promise<User> {
+	async getUserByUsername(username: string, throwErr = true): Promise<User> {
 		const user = await this.usersRepository.findOne({ where: { username } });
 
 		if (throwErr && !user) {

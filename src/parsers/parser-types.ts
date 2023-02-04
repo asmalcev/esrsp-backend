@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { TeacherDto } from 'src/roles/dto/teacher.dto';
 import { DisciplineDto } from 'src/schedule/dto/discipline.dto';
 import { StudentGroupDto } from 'src/schedule/dto/student-group.dto';

@@ -1,4 +1,6 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 class AppConfig {
 	private localEnv: Record<string, string> = {};

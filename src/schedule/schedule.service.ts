@@ -343,7 +343,7 @@ export class ScheduleService {
 	}
 
 	async updateLessonTime(
-		id:number,
+		id: number,
 		lessonTimeDto: Partial<LessonTimeDto>,
 	): Promise<void> {
 		await this.lessonTimeRepository.update({ id }, { ...lessonTimeDto });

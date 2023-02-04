@@ -100,11 +100,7 @@ export class UploadService {
 			const result: LessonTimeDto[] = JSON.parse(lessonsTimes);
 
 			for (const lessonTime of result) {
-				if (
-					!lessonTime.id
-					|| !lessonTime.timeStart
-					|| !lessonTime.timeEnd
-				) {
+				if (!lessonTime.id || !lessonTime.timeStart || !lessonTime.timeEnd) {
 					throw new Error();
 				}
 			}

@@ -2,9 +2,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { parse } from './parser';
 
-const multiGroupAnswer = require('./tests/multi-group.json');
-const emptyTeacherAnswer = require('./tests/empty-teacher.json');
-const multiTeacherAnswer = require('./tests/multi-teacher.json');
+import multiGroupAnswer from './tests/multi-group.json';
+import emptyTeacherAnswer from './tests/empty-teacher.json';
+import multiTeacherAnswer from './tests/multi-teacher.json';
 
 const readFile = (pathToFile: string): string =>
 	fs.readFileSync(path.join(__dirname, pathToFile), {

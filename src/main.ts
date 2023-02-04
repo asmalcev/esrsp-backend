@@ -1,13 +1,14 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import * as session from 'express-session';
+import connectRedis from 'connect-redis';
+import { createClient } from 'redis';
 
 import { AppModule } from './app.module';
 import { appConfig } from './config/app.config';
 import { RolesGuard } from './roles/roles.guard';
 
-const RedisStore = require('connect-redis')(session);
-const { createClient } = require('redis');
+const RedisStore = connectRedis(session);
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);

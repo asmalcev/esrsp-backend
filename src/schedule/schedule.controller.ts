@@ -144,35 +144,41 @@ export class ScheduleController {
 	/*
 	 * LessonTime
 	 */
-		@Get('/lesson-time/:id')
-		async getLessonTime(@Param('id', ParseIntPipe) id: number): Promise<LessonTime> {
-			return this.scheduleService.getLessonTime(id);
-		}
-	
-		@Get('/lesson-time')
-		async getLessonsTimes(): Promise<LessonTime[]> {
-			return this.scheduleService.getLessonsTimes();
-		}
-	
-		@Post('/lesson-time')
-		async createLessonTime(@Body() lessonTimeDto: LessonTimeDto): Promise<LessonTime> {
-			return this.scheduleService.createLessonTime(lessonTimeDto);
-		}
-	
-		@Put('/lesson-time/:id')
-		async updateLessonTime(
-			@Param('id', ParseIntPipe) id: number,
-			@Body() lessonTimeDto: Partial<LessonTimeDto>,
-		): Promise<WithMsg> {
-			this.scheduleService.updateLessonTime(id, lessonTimeDto);
-			return successResponse;
-		}
-	
-		@Delete('/lesson-time/:id')
-		async removeLessonTime(@Param('id', ParseIntPipe) id: number): Promise<WithMsg> {
-			this.scheduleService.removeLessonTime(id);
-			return successResponse;
-		}
+	@Get('/lesson-time/:id')
+	async getLessonTime(
+		@Param('id', ParseIntPipe) id: number,
+	): Promise<LessonTime> {
+		return this.scheduleService.getLessonTime(id);
+	}
+
+	@Get('/lesson-time')
+	async getLessonsTimes(): Promise<LessonTime[]> {
+		return this.scheduleService.getLessonsTimes();
+	}
+
+	@Post('/lesson-time')
+	async createLessonTime(
+		@Body() lessonTimeDto: LessonTimeDto,
+	): Promise<LessonTime> {
+		return this.scheduleService.createLessonTime(lessonTimeDto);
+	}
+
+	@Put('/lesson-time/:id')
+	async updateLessonTime(
+		@Param('id', ParseIntPipe) id: number,
+		@Body() lessonTimeDto: Partial<LessonTimeDto>,
+	): Promise<WithMsg> {
+		this.scheduleService.updateLessonTime(id, lessonTimeDto);
+		return successResponse;
+	}
+
+	@Delete('/lesson-time/:id')
+	async removeLessonTime(
+		@Param('id', ParseIntPipe) id: number,
+	): Promise<WithMsg> {
+		this.scheduleService.removeLessonTime(id);
+		return successResponse;
+	}
 
 	/*
 	 * Schedule
