@@ -21,7 +21,7 @@ import { Discipline } from './entity/discipline';
 import { Lesson } from './entity/lesson';
 import { LessonTime } from './entity/lesson-time';
 import { StudentGroup } from './entity/student-group';
-import { TeacherStudentGroups } from './schedule.type';
+import { TeacherStudentGroups, TimedLessons } from './schedule.type';
 
 @Injectable()
 export class ScheduleService {
@@ -360,8 +360,8 @@ export class ScheduleService {
 	/*
 	 * Schedule
 	 */
-	async getTeacherSchedule(id: number): Promise<Lesson[]> {
-		return await this.lessonsRepository.find({
+	async getTeacherSchedule(id: number): Promise<TimedLessons> {
+		const teacherSchedule: TimedLessons = await this.lessonsRepository.find({
 			where: {
 				teacher: { id },
 			},
@@ -375,10 +375,16 @@ export class ScheduleService {
 				lessonNumber: 'ASC',
 			},
 		});
+
+		for (const lesson of teacherSchedule) {
+			lesson.lessonTime = await this.getLessonTime(lesson.lessonNumber);
+		}
+
+		return teacherSchedule;
 	}
 
-	async getStudentSchedule(id: number): Promise<Lesson[]> {
-		return await this.lessonsRepository.find({
+	async getStudentSchedule(id: number): Promise<TimedLessons> {
+		const studentSchedule: TimedLessons = await this.lessonsRepository.find({
 			where: {
 				studentGroups: {
 					students: { id },
@@ -394,6 +400,12 @@ export class ScheduleService {
 				lessonNumber: 'ASC',
 			},
 		});
+
+		for (const lesson of studentSchedule) {
+			lesson.lessonTime = await this.getLessonTime(lesson.lessonNumber);
+		}
+
+		return studentSchedule;
 	}
 
 	async getTeacherStudentGroups(
