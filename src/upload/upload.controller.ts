@@ -19,7 +19,7 @@ export class UploadController {
 	async uploadVoenmehTimetable(
 		@UploadedFile() file: Express.Multer.File,
 	): Promise<WithMsg> {
-		if (!file.buffer) {
+		if (!file || !file.buffer) {
 			throw new BadRequestException('empty file');
 		}
 
@@ -33,7 +33,7 @@ export class UploadController {
 	async uploadTimetable(
 		@UploadedFile() file: Express.Multer.File,
 	): Promise<WithMsg> {
-		if (!file.buffer) {
+		if (!file || !file.buffer) {
 			throw new BadRequestException('empty file');
 		}
 
@@ -47,7 +47,7 @@ export class UploadController {
 	async uploadStudentGroups(
 		@UploadedFile() file: Express.Multer.File,
 	): Promise<WithMsg> {
-		if (!file.buffer) {
+		if (!file || !file.buffer) {
 			throw new BadRequestException('empty file');
 		}
 
@@ -60,7 +60,7 @@ export class UploadController {
 	async uploadLessonsTimes(
 		@UploadedFile() file: Express.Multer.File,
 	): Promise<WithMsg> {
-		if (!file.buffer) {
+		if (!file || !file.buffer) {
 			throw new BadRequestException('empty file');
 		}
 
