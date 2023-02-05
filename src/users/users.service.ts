@@ -23,13 +23,13 @@ export class UsersService {
 		@InjectRepository(User)
 		private readonly usersRepository: Repository<User>,
 	) {
+		this.createSuperUser();
+	}
+
+	async createSuperUser() {
 		const username = appConfig.getValue('SUPERUSER_USERNAME');
 		const password = appConfig.getValue('SUPERUSER_PASSWORD');
 
-		this.createSuperUser(username, password);
-	}
-
-	async createSuperUser(username: string, password: string) {
 		const superuser = await this.getUserByUsername(username, false);
 
 		if (!superuser) {
@@ -87,5 +87,10 @@ export class UsersService {
 
 	async removeUser(id: number): Promise<void> {
 		this.usersRepository.delete({ id });
+	}
+
+	async removeAllUsers(): Promise<void> {
+		await this.usersRepository.delete({});
+		await this.createSuperUser();
 	}
 }

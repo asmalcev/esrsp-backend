@@ -14,6 +14,8 @@ export class GenerateService {
 	) {}
 
 	async generateUsers(): Promise<TeacherStudentUsers> {
+		await this.usersService.removeAllUsers();
+
 		const result: TeacherStudentUsers = {
 			teachers: [],
 			students: [],
