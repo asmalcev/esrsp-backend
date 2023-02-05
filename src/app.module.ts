@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import entities from './entities';
@@ -11,6 +11,8 @@ import { ScheduleModule } from './schedule/schedule.module';
 import { PerformanceModule } from './performance/performance.module';
 import { UploadModule } from './upload/upload.module';
 import { GenerateModule } from './generate/generate.module';
+import { LoggerModule } from './logger/logger.module';
+import { LoggerMiddleware } from './common/logger.middleware';
 
 @Module({
 	imports: [
@@ -31,8 +33,13 @@ import { GenerateModule } from './generate/generate.module';
 		PerformanceModule,
 		UploadModule,
 		GenerateModule,
+		LoggerModule,
 	],
 	controllers: [],
 	providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(LoggerMiddleware).exclude('logger/(.*)').forRoutes('*');
+	}
+}

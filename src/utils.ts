@@ -1,3 +1,8 @@
+import * as fs from 'fs';
+import * as path from 'path';
+import { appConfig } from './config/app.config';
+import { LogType, WriteLogType } from './log.type';
+
 /**
  * Author: Split Your Infinity
  * answered Jul 9, 2012 at 22:28
@@ -101,3 +106,24 @@ export function generatePassword(length: number): string {
 
 	return retVal;
 }
+
+export const logDatetime = (d: Date): string | number => {
+	return d.getTime();
+};
+
+export const writeLog = (
+	{ msg, session, type }: WriteLogType,
+	client = false,
+): string => {
+	const logFileName = client ? 'client_logs.txt' : 'server_logs.txt';
+	const datetime = logDatetime(new Date());
+	const logType = type || LogType[LogType.DEBUG];
+	const user = session?.user?.id || 'unauth';
+
+	const logMSG = `${datetime} - [${logType}] - ${user} - ${msg}\n`;
+
+	const filePath = path.join(appConfig.getValue('LOGS_PATH'), logFileName);
+	fs.appendFileSync(filePath, logMSG);
+
+	return logMSG;
+};

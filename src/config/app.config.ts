@@ -27,4 +27,5 @@ export const appConfig = new AppConfig(process.env, [
 	'SUPERUSER_USERNAME',
 	'SUPERUSER_PASSWORD',
 	'PORT',
+	'LOGS_PATH',
 ]);
