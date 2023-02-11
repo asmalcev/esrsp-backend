@@ -1,11 +1,11 @@
-import { IsDate, IsInt, IsNotEmpty, Min } from 'class-validator';
+import { IsDateString, IsInt, IsNotEmpty, Min } from 'class-validator';
 
 export class PerformanceDto {
 	@IsNotEmpty()
 	value: string;
 
 	@IsNotEmpty()
-	@IsDate()
+	@IsDateString()
 	date: Date;
 
 	@IsNotEmpty()

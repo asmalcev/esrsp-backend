@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	forwardRef,
+	Inject,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from 'src/roles/entity/student';
 import { RolesService } from 'src/roles/roles.service';
@@ -13,7 +18,9 @@ export class PerformanceService {
 	constructor(
 		@InjectRepository(Performance)
 		private readonly performanceRepository: Repository<Performance>,
+		@Inject(forwardRef(() => RolesService))
 		private readonly rolesService: RolesService,
+		@Inject(forwardRef(() => ScheduleService))
 		private readonly scheduleService: ScheduleService,
 	) {}
 

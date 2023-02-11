@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RolesModule } from 'src/roles/roles.module';
 import { ScheduleModule } from 'src/schedule/schedule.module';
@@ -9,10 +9,11 @@ import { PerformanceService } from './performance.service';
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([Performance]),
-		RolesModule,
-		ScheduleModule,
+		forwardRef(() => RolesModule),
+		forwardRef(() => ScheduleModule),
 	],
 	controllers: [PerformanceController],
 	providers: [PerformanceService],
+	exports: [PerformanceService],
 })
 export class PerformanceModule {}

@@ -1,5 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PerformanceModule } from 'src/performance/performance.module';
 import { RolesModule } from 'src/roles/roles.module';
 import { Discipline } from './entity/discipline';
 import { Lesson } from './entity/lesson';
@@ -11,6 +12,7 @@ import { ScheduleService } from './schedule.service';
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([StudentGroup, Lesson, Discipline, LessonTime]),
+		forwardRef(() => PerformanceModule),
 		forwardRef(() => RolesModule),
 	],
 	controllers: [ScheduleController],

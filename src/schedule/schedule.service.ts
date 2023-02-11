@@ -5,8 +5,11 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PerformanceService } from 'src/performance/performance.service';
+import { Student } from 'src/roles/entity/student';
 import { Teacher } from 'src/roles/entity/teacher';
 import { RolesService } from 'src/roles/roles.service';
+import { getddmm } from 'src/utils';
 import {
 	FindManyOptions,
 	FindOneOptions,
@@ -21,6 +24,7 @@ import { Discipline } from './entity/discipline';
 import { Lesson } from './entity/lesson';
 import { LessonTime } from './entity/lesson-time';
 import { StudentGroup } from './entity/student-group';
+import lessonDaysToDates from './lessonDaysToDates';
 import { TeacherStudentGroups, TimedLessons } from './schedule.type';
 
 @Injectable()
@@ -36,6 +40,8 @@ export class ScheduleService {
 		private readonly lessonTimeRepository: Repository<LessonTime>,
 		@Inject(forwardRef(() => RolesService))
 		private readonly rolesService: RolesService,
+		@Inject(forwardRef(() => PerformanceService))
+		private readonly performanceService: PerformanceService,
 	) {}
 
 	/*
@@ -411,7 +417,7 @@ export class ScheduleService {
 	async getTeacherStudentGroups(
 		teacherId: number,
 	): Promise<TeacherStudentGroups[]> {
-		return this.lessonsRepository.query(`
+		return await this.lessonsRepository.query(`
 			select distinct
 				"D"."name" as "discipline",
 				"D"."id" as "disciplineId",
@@ -427,7 +433,7 @@ export class ScheduleService {
 	}
 
 	async getStudentDisciplines(studentId: number): Promise<any> {
-		return this.lessonsRepository.query(`
+		return await this.lessonsRepository.query(`
 			select distinct
 				"D"."name" as "discipline",
 				"D"."id" as "disciplineId"
@@ -440,5 +446,65 @@ export class ScheduleService {
 			)
 			order by "D"."id"
 		`);
+	}
+
+	async getStudentGroupPerformance(
+		studentGroupId: number,
+		disciplineId: number,
+	): Promise<any> {
+		const { students, ...studentGroup } = await this.getStudentGroup(
+			studentGroupId,
+		);
+		const discipline = await this.getDiscipline(disciplineId);
+
+		const performance = await this.performanceService.getPerformances({
+			where: {
+				student: students,
+				discipline: discipline,
+			},
+			relations: {
+				student: true,
+			},
+		});
+
+		const lessons = await this.getLessons({
+			where: {
+				studentGroups: studentGroup,
+				discipline: discipline,
+			},
+		});
+
+		const lessonDates = lessonDaysToDates(
+			lessons.map((lesson) => lesson.lessonDay),
+		);
+
+		const table: (Student | string)[][] = [['', ...lessonDates]];
+		for (let i = 0; i < students.length; i++) {
+			table.push(new Array(lessonDates.length).fill(''));
+			table[i + 1].unshift(students[i]);
+		}
+
+		performance.forEach((p) => {
+			for (let j = 1; j < table.length; j++) {
+				const student = table[j][0] as Student;
+
+				if (student.id !== p.student.id) continue;
+
+				for (let i = 1; i < table[0].length; i++) {
+					const currentDate = table[0][i] as string;
+					console.log(getddmm(p.date), currentDate);
+
+					if (getddmm(p.date) === currentDate) {
+						table[j][i] = p.value;
+					}
+				}
+			}
+		});
+
+		return {
+			studentGroup,
+			discipline,
+			table,
+		};
 	}
 }
