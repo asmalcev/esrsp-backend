@@ -160,6 +160,13 @@ GET: `schedule/teacher/:id/groups`
 GET: `schedule/student/:id/disciplines`
 - получить список дисциплин студента
 
+#### Список группы с успеваемостью
+GET: `schedule/performance/:studentGroupId/:disciplineId`
+- получить:
+  - группу
+  - дисциплину
+  - список группы, совмещенный с датами занятий по дисциплине в виде таблицы
+
 
 ### Успеваемость
 GET: `performance/:id`
