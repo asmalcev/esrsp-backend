@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'performance' })
-@Index(['date', 'discipline'], { unique: true })
+@Index(['date', 'discipline', 'student'], { unique: true })
 export class Performance {
 	@PrimaryGeneratedColumn('increment')
 	id: number;
