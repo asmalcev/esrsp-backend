@@ -1,8 +1,15 @@
 import { Student } from 'src/roles/entity/student';
 import { Discipline } from 'src/schedule/entity/discipline';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	Column,
+	Entity,
+	Index,
+	ManyToOne,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'performance' })
+@Index(['date', 'discipline'], { unique: true })
 export class Performance {
 	@PrimaryGeneratedColumn('increment')
 	id: number;

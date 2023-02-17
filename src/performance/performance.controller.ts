@@ -22,19 +22,19 @@ export class PerformanceController {
 	async getPerformance(
 		@Param('id', ParseIntPipe) id: number,
 	): Promise<Performance> {
-		return this.performanceService.getPerformance(id);
+		return await this.performanceService.getPerformance(id);
 	}
 
 	@Get('/')
 	async getPerformances(): Promise<Performance[]> {
-		return this.performanceService.getPerformances();
+		return await this.performanceService.getPerformances();
 	}
 
 	@Post('/')
 	async createPerformance(
 		@Body() PerformanceDto: PerformanceDto,
 	): Promise<Performance> {
-		return this.performanceService.createPerformance(PerformanceDto);
+		return await this.performanceService.createPerformance(PerformanceDto);
 	}
 
 	@Put('/:id')
@@ -42,7 +42,7 @@ export class PerformanceController {
 		@Param('id', ParseIntPipe) id: number,
 		@Body() PerformanceDto: Partial<PerformanceDto>,
 	): Promise<WithMsg> {
-		this.performanceService.updatePerformance(id, PerformanceDto);
+		await this.performanceService.updatePerformance(id, PerformanceDto);
 		return successResponse;
 	}
 
@@ -50,7 +50,7 @@ export class PerformanceController {
 	async removePerformance(
 		@Param('id', ParseIntPipe) id: number,
 	): Promise<WithMsg> {
-		this.performanceService.removePerformance(id);
+		await this.performanceService.removePerformance(id);
 		return successResponse;
 	}
 }

@@ -5,6 +5,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Performance } from 'src/performance/entity/performance';
 import { PerformanceService } from 'src/performance/performance.service';
 import { Student } from 'src/roles/entity/student';
 import { Teacher } from 'src/roles/entity/teacher';
@@ -478,24 +479,25 @@ export class ScheduleService {
 			lessons.map((lesson) => lesson.lessonDay),
 		);
 
-		const table: (Student | string)[][] = [['', ...lessonDates]];
+		const tableHead = [studentGroup.name, ...lessonDates];
+
+		const table: (Student | Performance)[][] = [];
 		for (let i = 0; i < students.length; i++) {
-			table.push(new Array(lessonDates.length).fill(''));
-			table[i + 1].unshift(students[i]);
+			table.push(new Array(lessonDates.length).fill(null));
+			table[i].unshift(students[i]);
 		}
 
 		performance.forEach((p) => {
-			for (let j = 1; j < table.length; j++) {
+			for (let j = 0; j < table.length; j++) {
 				const student = table[j][0] as Student;
 
 				if (student.id !== p.student.id) continue;
 
 				for (let i = 1; i < table[0].length; i++) {
-					const currentDate = table[0][i] as string;
-					console.log(getddmm(p.date), currentDate);
+					const currentDate = tableHead[i];
 
 					if (getddmm(p.date) === currentDate) {
-						table[j][i] = p.value;
+						table[j][i] = p;
 					}
 				}
 			}
@@ -504,6 +506,7 @@ export class ScheduleService {
 		return {
 			studentGroup,
 			discipline,
+			tableHead,
 			table,
 		};
 	}

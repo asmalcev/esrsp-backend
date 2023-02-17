@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	forwardRef,
 	Inject,
 	Injectable,
@@ -9,7 +10,12 @@ import { Student } from 'src/roles/entity/student';
 import { RolesService } from 'src/roles/roles.service';
 import { Discipline } from 'src/schedule/entity/discipline';
 import { ScheduleService } from 'src/schedule/schedule.service';
-import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import {
+	FindManyOptions,
+	FindOneOptions,
+	QueryFailedError,
+	Repository,
+} from 'typeorm';
 import { PerformanceDto } from './dto/performance.dto';
 import { Performance } from './entity/performance';
 
@@ -34,11 +40,20 @@ export class PerformanceService {
 			performanceDto.disciplineId,
 		);
 
-		return await this.performanceRepository.save({
-			...performanceDto,
-			student,
-			discipline,
-		});
+		let performance;
+		try {
+			performance = await this.performanceRepository.save({
+				...performanceDto,
+				student,
+				discipline,
+			});
+		} catch (e) {
+			throw new BadRequestException(
+				'date and discipline must be unique at the same time',
+			);
+		}
+
+		return performance;
 	}
 
 	async getPerformance(
@@ -85,7 +100,7 @@ export class PerformanceService {
 			);
 		}
 
-		this.performanceRepository.update(
+		await this.performanceRepository.update(
 			{ id },
 			{
 				...performanceDto,
@@ -95,6 +110,6 @@ export class PerformanceService {
 	}
 
 	async removePerformance(id: number): Promise<void> {
-		this.performanceRepository.delete({ id });
+		await this.performanceRepository.delete({ id });
 	}
 }
