@@ -1,3 +1,4 @@
+import { Performance } from 'src/performance/entity/performance';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Lesson } from './lesson';
 
@@ -14,4 +15,10 @@ export class Discipline {
 		cascade: true,
 	})
 	lessons: Lesson[];
+
+	@OneToMany(() => Performance, (performance) => performance.discipline, {
+		nullable: true,
+		cascade: true,
+	})
+	performances: Performance[];
 }

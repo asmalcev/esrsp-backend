@@ -433,20 +433,21 @@ export class ScheduleService {
 		`);
 	}
 
-	async getStudentDisciplines(studentId: number): Promise<any> {
-		return await this.lessonsRepository.query(`
-			select distinct
-				"D"."name" as "discipline",
-				"D"."id" as "disciplineId"
-			from "lesson_student_groups_student-group" as "LSG"
-			join "lesson" as "L" on "L"."id" = "LSG"."lessonId"
-			join "discipline" as "D" on "D"."id" = "L"."disciplineId"
-			where "LSG"."studentGroupId" = (
-				select "S"."studentGroupId" from "student" as "S"
-				where "S"."id" = ${studentId}
-			)
-			order by "D"."id"
-		`);
+	async getStudentDisciplines(id: number): Promise<Discipline[]> {
+		return await this.disciplinesRepository.find({
+			where: {
+				lessons: {
+					studentGroups: {
+						students: {
+							id,
+						},
+					},
+				},
+			},
+			order: {
+				id: 'ASC',
+			},
+		});
 	}
 
 	async getStudentGroupPerformance(
@@ -509,5 +510,34 @@ export class ScheduleService {
 			tableHead,
 			table,
 		};
+	}
+
+	async getStudentPerformance(id: number) {
+		const disciplines = await this.getStudentDisciplines(id);
+		const performanceByDisciplines = await this.disciplinesRepository.find({
+			where: {
+				performances: {
+					student: {
+						id,
+					},
+				},
+			},
+			relations: {
+				performances: true,
+			},
+		});
+
+		for (const discipline of disciplines) {
+			const index = performanceByDisciplines.findIndex(
+				(d) => d.id === discipline.id,
+			);
+			if (index >= 0) {
+				discipline.performances = performanceByDisciplines[index].performances;
+			} else {
+				discipline.performances = [];
+			}
+		}
+
+		return disciplines;
 	}
 }

@@ -222,8 +222,15 @@ export class ScheduleController {
 	@Get('/student/:id/disciplines')
 	async getStudentDisciplines(
 		@Param('id', ParseIntPipe) id: number,
-	): Promise<any> {
+	): Promise<Discipline[]> {
 		return await this.scheduleService.getStudentDisciplines(id);
+	}
+
+	@Get('/student/:id/performance')
+	async getStudentPerformance(
+		@Param('id', ParseIntPipe) id: number,
+	): Promise<Discipline[]> {
+		return await this.scheduleService.getStudentPerformance(id);
 	}
 
 	@Get('/performance/:groupid/:disciplineid')
