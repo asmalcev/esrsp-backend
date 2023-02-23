@@ -563,4 +563,13 @@ export class ScheduleService {
 
 		return disciplines;
 	}
+
+	async getStudentGroupsTeachers(): Promise<{
+		teachers: Teacher[];
+		studentGroups: StudentGroup[];
+	}> {
+		const teachers = await this.rolesService.getTeachers();
+		const studentGroups = await this.getStudentGroups();
+		return { teachers, studentGroups };
+	}
 }

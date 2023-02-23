@@ -15,6 +15,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { successResponse } from 'src/common-responses';
 import { WithMsg } from 'src/common-types';
 import { Student } from 'src/roles/entity/student';
+import { Teacher } from 'src/roles/entity/teacher';
 import { UserRole } from 'src/users/dto/user.dto';
 import { DisciplineDto } from './dto/discipline.dto';
 import { LessonTimeDto } from './dto/lesson-time.dto';
@@ -249,5 +250,13 @@ export class ScheduleController {
 			studentGroupId,
 			disciplineId,
 		);
+	}
+
+	@Get('/teacher-groups/')
+	async getStudentGroupsTeachers(): Promise<{
+		teachers: Teacher[];
+		studentGroups: StudentGroup[];
+	}> {
+		return await this.scheduleService.getStudentGroupsTeachers();
 	}
 }
