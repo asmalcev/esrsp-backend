@@ -78,7 +78,12 @@ export class UsersService {
 	}
 
 	async getAllUsers(): Promise<User[]> {
-		return this.usersRepository.find({ select: SelectFindOptions });
+		return this.usersRepository.find({
+			select: SelectFindOptions,
+			order: {
+				id: 'ASC',
+			},
+		});
 	}
 
 	async updateUser(id: number, userDto: Partial<UserDto>): Promise<void> {

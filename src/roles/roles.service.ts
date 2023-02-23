@@ -78,6 +78,9 @@ export class RolesService {
 
 	async getStudents(other?: FindManyOptions<Student>): Promise<Student[]> {
 		return await this.studentRepository.find({
+			order: {
+				id: 'ASC',
+			},
 			...other,
 		});
 	}
@@ -152,6 +155,9 @@ export class RolesService {
 
 	async getTeachers(other?: FindManyOptions<Teacher>): Promise<Teacher[]> {
 		return await this.teacherRepository.find({
+			order: {
+				id: 'ASC',
+			},
 			...other,
 		});
 	}

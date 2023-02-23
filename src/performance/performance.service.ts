@@ -76,6 +76,9 @@ export class PerformanceService {
 		other?: FindManyOptions<Performance>,
 	): Promise<Performance[]> {
 		return await this.performanceRepository.find({
+			order: {
+				id: 'ASC',
+			},
 			...other,
 		});
 	}

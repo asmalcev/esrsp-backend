@@ -109,6 +109,9 @@ export class ScheduleService {
 		other?: FindManyOptions<StudentGroup>,
 	): Promise<StudentGroup[]> {
 		return await this.studentGroupsRepository.find({
+			order: {
+				id: 'ASC',
+			},
 			...other,
 		});
 	}
@@ -208,6 +211,9 @@ export class ScheduleService {
 		},
 	): Promise<Lesson[]> {
 		return await this.lessonsRepository.find({
+			order: {
+				id: 'ASC',
+			},
 			...other,
 		});
 	}
@@ -296,6 +302,9 @@ export class ScheduleService {
 		other?: Omit<FindManyOptions<Discipline>, 'where'>,
 	): Promise<Discipline[]> {
 		return await this.disciplinesRepository.find({
+			order: {
+				id: 'ASC',
+			},
 			...other,
 		});
 	}
@@ -346,7 +355,11 @@ export class ScheduleService {
 	}
 
 	async getLessonsTimes(): Promise<LessonTime[]> {
-		return await this.lessonTimeRepository.find();
+		return await this.lessonTimeRepository.find({
+			order: {
+				id: 'ASC',
+			},
+		});
 	}
 
 	async updateLessonTime(
