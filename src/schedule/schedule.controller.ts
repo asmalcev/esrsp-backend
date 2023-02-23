@@ -198,6 +198,13 @@ export class ScheduleController {
 		return await this.scheduleService.getStudentSchedule(id);
 	}
 
+	@Get('/student-group/:id')
+	async getStudentGroupSchedule(
+		@Param('id', ParseIntPipe) id: number,
+	): Promise<Lesson[]> {
+		return await this.scheduleService.getStudentGroupSchedule(id);
+	}
+
 	@Get('/')
 	@UseGuards(AuthGuard)
 	async getUserSchedule(

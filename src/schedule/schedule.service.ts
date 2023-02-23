@@ -415,6 +415,29 @@ export class ScheduleService {
 		return studentSchedule;
 	}
 
+	async getStudentGroupSchedule(id: number): Promise<TimedLessons> {
+		const studentSchedule: TimedLessons = await this.lessonsRepository.find({
+			where: {
+				studentGroups: { id },
+			},
+			relations: {
+				teacher: true,
+				discipline: true,
+				studentGroups: true,
+			},
+			order: {
+				lessonDay: 'ASC',
+				lessonNumber: 'ASC',
+			},
+		});
+
+		for (const lesson of studentSchedule) {
+			lesson.lessonTime = await this.getLessonTime(lesson.lessonNumber);
+		}
+
+		return studentSchedule;
+	}
+
 	async getTeacherStudentGroups(
 		teacherId: number,
 	): Promise<TeacherStudentGroups[]> {
