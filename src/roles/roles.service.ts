@@ -66,6 +66,9 @@ export class RolesService {
 	): Promise<Student> {
 		const student = await this.studentRepository.findOne({
 			where: { id },
+			relations: {
+				studentGroup: true,
+			},
 			...other,
 		});
 
