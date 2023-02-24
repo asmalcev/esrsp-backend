@@ -366,7 +366,8 @@ export class ScheduleService {
 		id: number,
 		lessonTimeDto: Partial<LessonTimeDto>,
 	): Promise<void> {
-		await this.lessonTimeRepository.update({ id }, { ...lessonTimeDto });
+		const { id: _, ...other } = lessonTimeDto;
+		await this.lessonTimeRepository.update({ id }, { ...other });
 	}
 
 	async removeLessonTime(id: number): Promise<void> {

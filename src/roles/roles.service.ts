@@ -104,7 +104,7 @@ export class RolesService {
 			);
 		}
 
-		this.studentRepository.update(
+		await this.studentRepository.update(
 			{ id },
 			{
 				...studentDto,
@@ -114,11 +114,11 @@ export class RolesService {
 	}
 
 	async removeStudent(id: number): Promise<void> {
-		this.studentRepository.delete({ id });
+		await this.studentRepository.delete({ id });
 	}
 
 	async removeAllStudents(): Promise<void> {
-		this.studentRepository.delete({});
+		await this.studentRepository.delete({});
 	}
 
 	/*
@@ -166,14 +166,15 @@ export class RolesService {
 		id: number,
 		teacherDto: Partial<TeacherDto>,
 	): Promise<void> {
-		this.teacherRepository.update({ id }, { ...teacherDto });
+		const { id: _, ...other } = teacherDto;
+		await this.teacherRepository.update({ id }, { ...other });
 	}
 
 	async removeTeacher(id: number): Promise<void> {
-		this.teacherRepository.delete({ id });
+		await this.teacherRepository.delete({ id });
 	}
 
 	async removeAllTeachers(): Promise<void> {
-		this.teacherRepository.delete({});
+		await this.teacherRepository.delete({});
 	}
 }
