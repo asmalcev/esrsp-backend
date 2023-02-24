@@ -78,6 +78,9 @@ export class RolesService {
 
 	async getStudents(other?: FindManyOptions<Student>): Promise<Student[]> {
 		return await this.studentRepository.find({
+			relations: {
+				studentGroup: true,
+			},
 			order: {
 				id: 'ASC',
 			},
