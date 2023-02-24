@@ -87,11 +87,16 @@ export class UsersService {
 	}
 
 	async updateUser(id: number, userDto: Partial<UserDto>): Promise<void> {
-		this.usersRepository.update({ id }, { ...userDto });
+		const { username, ...other } = userDto;
+
+		const saltOrRounds = 10;
+		other.password = await bcrypt.hash(userDto.password, saltOrRounds);
+
+		await this.usersRepository.update({ id }, { ...other });
 	}
 
 	async removeUser(id: number): Promise<void> {
-		this.usersRepository.delete({ id });
+		await this.usersRepository.delete({ id });
 	}
 
 	async removeAllUsers(): Promise<void> {
