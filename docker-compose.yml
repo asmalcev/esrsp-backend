@@ -22,9 +22,19 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     ports:
-      - '6379:6379'
+      - ${REDIS_PORT}:${REDIS_PORT}
     volumes:
       - redis_data:/bitnami/redis/data
+
+  api:
+    container_name: esrsp_backend
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - db
+      - redis
+
 
 volumes:
   pgdata:
