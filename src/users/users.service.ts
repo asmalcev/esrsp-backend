@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { appConfig } from 'src/config/app.config';
 import { UserDto, UserRole } from './dto/user.dto';
 import { User } from './entity/user';
+import { generatePassword } from 'src/utils';
 
 const SelectFindOptions = {
 	id: true,
@@ -102,5 +103,15 @@ export class UsersService {
 	async removeAllUsers(): Promise<void> {
 		await this.usersRepository.delete({});
 		await this.createSuperUser();
+	}
+
+	async updateUserPassword(id: number): Promise<string> {
+		const password = generatePassword(16);
+
+		await this.updateUser(id, {
+			password,
+		});
+
+		return password;
 	}
 }

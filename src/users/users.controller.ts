@@ -10,7 +10,7 @@ import {
 	Delete,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { WithMsg } from 'src/common-types';
+import { WithMsg, WithValue } from 'src/common-types';
 import { Roles } from 'src/roles/roles.guard';
 import { UserDto } from './dto/user.dto';
 import { User } from './entity/user';
@@ -66,5 +66,14 @@ export class UsersController {
 	@Get('/:id')
 	async getUserById(@Param('id', ParseIntPipe) id: number): Promise<User> {
 		return this.usersService.getUserById(id);
+	}
+
+	@Get('/:id/update-password')
+	async updateUserPassword(
+		@Param('id', ParseIntPipe) id: number,
+	): Promise<WithValue> {
+		return {
+			value: await this.usersService.updateUserPassword(id),
+		};
 	}
 }
