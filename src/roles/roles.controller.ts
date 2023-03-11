@@ -7,15 +7,20 @@ import {
 	ParseIntPipe,
 	Post,
 	Put,
+	UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { successResponse } from 'src/common-responses';
 import { WithMsg } from 'src/common-types';
 import { StudentDto } from './dto/student.dto';
 import { TeacherDto } from './dto/teacher.dto';
 import { Student } from './entity/student';
 import { Teacher } from './entity/teacher';
+import { Roles } from './roles.guard';
 import { RolesService } from './roles.service';
 
+@UseGuards(AuthGuard)
+@Roles('admin')
 @Controller('roles')
 export class RolesController {
 	constructor(private readonly rolesService: RolesService) {}

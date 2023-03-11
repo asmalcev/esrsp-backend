@@ -15,6 +15,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { successResponse } from 'src/common-responses';
 import { WithMsg } from 'src/common-types';
 import { Teacher } from 'src/roles/entity/teacher';
+import { Roles } from 'src/roles/roles.guard';
 import { UserRole } from 'src/users/dto/user.dto';
 import { DisciplineDto } from './dto/discipline.dto';
 import { LessonTimeDto } from './dto/lesson-time.dto';
@@ -27,6 +28,7 @@ import { StudentGroup } from './entity/student-group';
 import { ScheduleService } from './schedule.service';
 import { TeacherStudentGroups } from './schedule.type';
 
+@UseGuards(AuthGuard)
 @Controller('schedule')
 export class ScheduleController {
 	constructor(private readonly scheduleService: ScheduleService) {}
@@ -34,6 +36,7 @@ export class ScheduleController {
 	/*
 	 * Student Group
 	 */
+	@Roles('admin')
 	@Get('/group/:id')
 	async getStudentGroup(
 		@Param('id', ParseIntPipe) id: number,
@@ -41,11 +44,13 @@ export class ScheduleController {
 		return await this.scheduleService.getStudentGroup(id);
 	}
 
+	@Roles('admin')
 	@Get('/group')
 	async getStudentGroups(): Promise<StudentGroup[]> {
 		return await this.scheduleService.getStudentGroups();
 	}
 
+	@Roles('admin')
 	@Post('/group')
 	async createStudentGroup(
 		@Body() studentGroupDto: StudentGroupDto,
@@ -53,6 +58,7 @@ export class ScheduleController {
 		return await this.scheduleService.createStudentGroup(studentGroupDto);
 	}
 
+	@Roles('admin')
 	@Put('/group/:id')
 	async updateStudentGroup(
 		@Param('id', ParseIntPipe) id: number,
@@ -62,6 +68,7 @@ export class ScheduleController {
 		return successResponse;
 	}
 
+	@Roles('admin')
 	@Delete('/group/:id')
 	async removeStudentGroup(
 		@Param('id', ParseIntPipe) id: number,
@@ -73,6 +80,7 @@ export class ScheduleController {
 	/*
 	 * Discipline
 	 */
+	@Roles('admin')
 	@Get('/discipline/:id')
 	async getDiscipline(
 		@Param('id', ParseIntPipe) id: number,
@@ -80,11 +88,13 @@ export class ScheduleController {
 		return await this.scheduleService.getDiscipline(id);
 	}
 
+	@Roles('admin')
 	@Get('/discipline')
 	async getDisciplines(): Promise<Discipline[]> {
 		return await this.scheduleService.getDisciplines();
 	}
 
+	@Roles('admin')
 	@Post('/discipline')
 	async createDiscipline(
 		@Body() disciplineDto: DisciplineDto,
@@ -92,6 +102,7 @@ export class ScheduleController {
 		return await this.scheduleService.createDiscipline(disciplineDto);
 	}
 
+	@Roles('admin')
 	@Put('/discipline/:id')
 	async updateDiscipline(
 		@Param('id', ParseIntPipe) id: number,
@@ -101,6 +112,7 @@ export class ScheduleController {
 		return successResponse;
 	}
 
+	@Roles('admin')
 	@Delete('/discipline/:id')
 	async removeDiscipline(
 		@Param('id', ParseIntPipe) id: number,
@@ -112,21 +124,25 @@ export class ScheduleController {
 	/*
 	 * Lesson
 	 */
+	@Roles('admin')
 	@Get('/lesson/:id')
 	async getLesson(@Param('id', ParseIntPipe) id: number): Promise<Lesson> {
 		return await this.scheduleService.getLesson(id);
 	}
 
+	@Roles('admin')
 	@Get('/lesson')
 	async getLessons(): Promise<Lesson[]> {
 		return await this.scheduleService.getLessons();
 	}
 
+	@Roles('admin')
 	@Post('/lesson')
 	async createLesson(@Body() lessonDto: LessonDto): Promise<Lesson> {
 		return await this.scheduleService.createLesson(lessonDto);
 	}
 
+	@Roles('admin')
 	@Put('/lesson/:id')
 	async updateLesson(
 		@Param('id', ParseIntPipe) id: number,
@@ -136,6 +152,7 @@ export class ScheduleController {
 		return successResponse;
 	}
 
+	@Roles('admin')
 	@Delete('/lesson/:id')
 	async removeLesson(@Param('id', ParseIntPipe) id: number): Promise<WithMsg> {
 		await this.scheduleService.removeLesson(id);
@@ -145,6 +162,7 @@ export class ScheduleController {
 	/*
 	 * LessonTime
 	 */
+	@Roles('admin')
 	@Get('/lesson-time/:id')
 	async getLessonTime(
 		@Param('id', ParseIntPipe) id: number,
@@ -152,11 +170,13 @@ export class ScheduleController {
 		return await this.scheduleService.getLessonTime(id);
 	}
 
+	@Roles('admin')
 	@Get('/lesson-time')
 	async getLessonsTimes(): Promise<LessonTime[]> {
 		return await this.scheduleService.getLessonsTimes();
 	}
 
+	@Roles('admin')
 	@Post('/lesson-time')
 	async createLessonTime(
 		@Body() lessonTimeDto: LessonTimeDto,
@@ -164,6 +184,7 @@ export class ScheduleController {
 		return await this.scheduleService.createLessonTime(lessonTimeDto);
 	}
 
+	@Roles('admin')
 	@Put('/lesson-time/:id')
 	async updateLessonTime(
 		@Param('id', ParseIntPipe) id: number,
@@ -173,6 +194,7 @@ export class ScheduleController {
 		return successResponse;
 	}
 
+	@Roles('admin')
 	@Delete('/lesson-time/:id')
 	async removeLessonTime(
 		@Param('id', ParseIntPipe) id: number,
@@ -206,7 +228,7 @@ export class ScheduleController {
 	}
 
 	@Get('/')
-	@UseGuards(AuthGuard)
+	@Roles('teacher', 'student')
 	async getUserSchedule(
 		@Session() session: Record<string, any>,
 	): Promise<Lesson[]> {

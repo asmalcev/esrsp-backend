@@ -32,6 +32,7 @@ export class AuthController {
 		};
 	}
 
+	@UseGuards(AuthGuard)
 	@Post('/logout')
 	logout(@Session() session: Record<string, any>): WithMsg {
 		session.destroy();

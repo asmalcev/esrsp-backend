@@ -21,6 +21,8 @@ type UserSignupResponse = WithMsg & Omit<User, 'password'>;
 type UserUpdateResponse = WithMsg;
 type UserRemoveResponse = WithMsg;
 
+@UseGuards(AuthGuard)
+@Roles('admin')
 @Controller('users')
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
@@ -56,17 +58,12 @@ export class UsersController {
 		};
 	}
 
-	/*
-	 * Temporary Test Methods
-	 */
 	@Get('/')
-	// @UseGuards(AuthGuard)
 	async getAll(): Promise<User[]> {
 		return this.usersService.getAllUsers();
 	}
 
 	@Get('/:id')
-	// @Roles('admin')
 	async getUserById(@Param('id', ParseIntPipe) id: number): Promise<User> {
 		return this.usersService.getUserById(id);
 	}

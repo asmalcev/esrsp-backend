@@ -7,13 +7,18 @@ import {
 	ParseIntPipe,
 	Post,
 	Put,
+	UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { successResponse } from 'src/common-responses';
 import { WithMsg } from 'src/common-types';
+import { Roles } from 'src/roles/roles.guard';
 import { PerformanceDto } from './dto/performance.dto';
 import { Performance } from './entity/performance';
 import { PerformanceService } from './performance.service';
 
+@UseGuards(AuthGuard)
+@Roles('admin', 'teacher')
 @Controller('performance')
 export class PerformanceController {
 	constructor(private readonly performanceService: PerformanceService) {}

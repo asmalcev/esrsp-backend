@@ -3,13 +3,18 @@ import {
 	Controller,
 	Post,
 	UploadedFile,
+	UseGuards,
 	UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { successResponse } from 'src/common-responses';
 import { WithMsg } from 'src/common-types';
+import { Roles } from 'src/roles/roles.guard';
 import { UploadService } from './upload.service';
 
+@UseGuards(AuthGuard)
+@Roles('admin')
 @Controller('upload')
 export class UploadController {
 	constructor(private readonly uploadService: UploadService) {}
