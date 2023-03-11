@@ -23,6 +23,7 @@ export const appConfig = new AppConfig(process.env, [
 	'POSTGRES_PASSWORD',
 	'POSTGRES_DATABASE',
 	'POSTGRES_PORT',
+	'REDIS_PORT',
 	'SESSION_SECRET',
 	'SUPERUSER_USERNAME',
 	'SUPERUSER_PASSWORD',

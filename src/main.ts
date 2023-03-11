@@ -14,11 +14,14 @@ const RedisStore = require('connect-redis')(session);
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
-	const redisClient = createClient({ legacyMode: true });
-	redisClient.connect().catch(console.error);
-
 	app.useGlobalPipes(new ValidationPipe());
 	app.useGlobalGuards(new RolesGuard(new Reflector()));
+
+	const redisClient = createClient({
+		legacyMode: true,
+		url: `redis://redis:${appConfig.getValue('REDIS_PORT')}`,
+	});
+	redisClient.connect().catch(console.error);
 	app.use(
 		session({
 			store: new RedisStore({ client: redisClient }),
