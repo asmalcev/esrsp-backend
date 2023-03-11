@@ -13,7 +13,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "ESRSP_PROD=1 node dist/main",
     "start:db": "docker-compose up -d db redis",
     "stop:db": "docker-compose stop db redis",
     "start:docker": "docker-compose up -d",

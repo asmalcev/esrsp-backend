@@ -17,10 +17,13 @@ async function bootstrap() {
 	app.useGlobalPipes(new ValidationPipe());
 	app.useGlobalGuards(new RolesGuard(new Reflector()));
 
-	const redisClient = createClient({
+	const redisOpts = {
 		legacyMode: true,
-		url: `redis://redis:${appConfig.getValue('REDIS_PORT')}`,
-	});
+	};
+	if (process.env['ESRSP_PROD']) {
+		redisOpts['url'] = `redis://redis:${appConfig.getValue('REDIS_PORT')}`;
+	}
+	const redisClient = createClient(redisOpts);
 	redisClient.connect().catch(console.error);
 	app.use(
 		session({
