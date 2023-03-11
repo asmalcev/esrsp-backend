@@ -18,7 +18,7 @@ import { LoggerMiddleware } from './common/logger.middleware';
 	imports: [
 		TypeOrmModule.forRoot({
 			type: 'postgres',
-			host: 'postgres',
+			host: process.env['ESRSP_PROD'] ? 'postgres' : 'localhost',
 			port: Number(appConfig.getValue('POSTGRES_PORT')),
 			username: appConfig.getValue('POSTGRES_USERNAME'),
 			password: appConfig.getValue('POSTGRES_PASSWORD'),

@@ -1,16 +1,16 @@
-name: reg.ru deploy
+# name: reg.ru deploy
 
-on:
-  push:
-    branches:
-      - "main"
+# on:
+#   push:
+#     branches:
+#       - "main"
 
-jobs:
-  build-deploy:
+# jobs:
+#   build-deploy:
 
-    runs-on: regru-runner
+#     runs-on: regru-runner
 
-    steps:
-    - uses: actions/checkout@v3
+#     steps:
+#     - uses: actions/checkout@v3
 
-    - run: yarn start:docker
+#     - run: yarn start:docker
