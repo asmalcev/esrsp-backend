@@ -4,9 +4,7 @@ FROM node:18
 # Create app directory
 WORKDIR /usr/src/app
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package.json ./
-COPY yarn.lock ./
+COPY package.json yarn.lock ./
 
 # Install app dependencies
 RUN yarn install --frozen-lockfile
@@ -20,4 +18,4 @@ RUN yarn build
 RUN yarn install --frozen-lockfile --production && yarn cache clean
 
 # Start the server using the production build
-RUN yarn start:prod
+CMD ["yarn", "start:prod"]

@@ -1,8 +1,8 @@
-version: '3.3'
+version: '3.6'
 
 services:
-  db:
-    container_name: esrsp_postgres
+  postgres:
+    container_name: postgres
     image: postgres:15.0
     restart: always
     environment:
@@ -15,8 +15,9 @@ services:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
 
   redis:
-    container_name: esrsp_redis
+    container_name: redis
     image: docker.io/bitnami/redis:7.0
+    restart: always
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=yes
@@ -26,13 +27,14 @@ services:
     volumes:
       - redis_data:/bitnami/redis/data
 
-  api:
-    container_name: esrsp_backend
+  backend:
+    container_name: backend
     build: .
+    restart: always
     ports:
       - ${PORT}:${PORT}
     depends_on:
-      - db
+      - postgres
       - redis
 
 
