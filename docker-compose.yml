@@ -28,7 +28,7 @@ services:
       - redis_data:/bitnami/redis/data
 
   backend:
-    container_name: backend
+    container_name: app
     build: .
     restart: always
     ports:
