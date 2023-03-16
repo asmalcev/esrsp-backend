@@ -23,6 +23,6 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker
-        run: docker-compose build app
+        run: docker-compose build backend
       
       - run: echo "${{ github.ref_name }}"
