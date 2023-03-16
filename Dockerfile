@@ -17,5 +17,7 @@ RUN yarn build
 
 RUN yarn install --frozen-lockfile --production && yarn cache clean
 
+RUN yarn make-logs
+
 # Start the server using the production build
 CMD ["yarn", "start:prod"]
