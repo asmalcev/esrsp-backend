@@ -28,7 +28,7 @@ jobs:
 
       - run: |
           echo "${{ steps.vars.outputs.tag }}"
-          echo "$RELEASE_VERSION"
+          echo "${{github.ref_name}}"
 
       # - name: Build Docker
       #   run: docker-compose build app
