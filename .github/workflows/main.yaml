@@ -23,6 +23,6 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker
-        run: docker-compose build backend
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/esrsp-backend:${{ github.ref_name }} .
       
       - run: echo "${{ github.ref_name }}"
