@@ -56,7 +56,7 @@ services:
       - redis_data_local:/bitnami/redis/data
 
   backend:
-    image: qzerrty/esrsp-backend:v0.0.1
+    image: qzerrty/esrsp-backend:version
     restart: always
     ports:
       - ${PORT}:${PORT}
@@ -67,7 +67,7 @@ services:
       - redis
 
   frontend:
-    image: qzerrty/esrsp-gui:test
+    image: qzerrty/esrsp-gui:version
     restart: always
     ports:
       - ${CLIENT_PORT}:${CLIENT_PORT}
@@ -83,6 +83,7 @@ volumes:
   redis_data_local:
     driver: local
 ```
+Нужно не забыть указать версии образов qzerrty/esrsp-backend и qzerrty/esrsp-gui
 
 Заполнить все поля в `.env`:
 ```
