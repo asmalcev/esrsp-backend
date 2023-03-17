@@ -1,17 +1,119 @@
 # ESRSP BACKEND
 Серверная часть приложения электронного журнала.
 
-## Как запустить
-```bash
-# Прежде всего
-npm install --global yarn
+## Содержание
+- [ESRSP BACKEND](#esrsp-backend)
+  - [Содержание](#содержание)
+  - [Использование](#использование)
+  - [Как разрабатывать локально](#как-разрабатывать-локально)
+  - [Стек](#стек)
+  - [Что умеет](#что-умеет)
+    - [Аутентификация](#аутентификация)
+    - [Роли](#роли)
+      - [Студент](#студент)
+      - [Преподаватель](#преподаватель)
+    - [Расписание](#расписание)
+      - [Группа студентов](#группа-студентов)
+      - [Дисциплина](#дисциплина)
+      - [Урок](#урок)
+      - [Время урока](#время-урока)
+      - [Расписание](#расписание-1)
+      - [Список группы с успеваемостью](#список-группы-с-успеваемостью)
+    - [Успеваемость](#успеваемость)
+    - [Пользователи](#пользователи)
+    - [Загрузка](#загрузка)
+    - [Генерация аккаунтов пользователей](#генерация-аккаунтов-пользователей)
 
-yarn initial # установить зависимости и подготовить необходимые папки
+## Использование
+На сервере нужно разместить два файла: `docker-compose.yml` и `.env`
+
+`docker-compose.yml`:
+```yaml
+version: '3.6'
+
+services:
+  postgres:
+    image: postgres:15.0
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+    volumes:
+      - pgdata_local:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+
+  redis:
+    image: docker.io/bitnami/redis:7.0
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    volumes:
+      - redis_data_local:/bitnami/redis/data
+
+  backend:
+    image: qzerrty/esrsp-backend:v0.0.1
+    restart: always
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    image: qzerrty/esrsp-gui:test
+    restart: always
+    ports:
+      - ${CLIENT_PORT}:${CLIENT_PORT}
+    environment:
+      - SERVER_PORT=${PORT}
+    depends_on:
+      - backend
+
+
+volumes:
+  pgdata_local:
+
+  redis_data_local:
+    driver: local
+```
+
+Заполнить все поля в `.env`:
+```
+POSTGRES_USERNAME=
+POSTGRES_PASSWORD=
+POSTGRES_DATABASE=
+POSTGRES_PORT=
+
+REDIS_PORT=
+
+SESSION_SECRET=
+SUPERUSER_USERNAME=
+SUPERUSER_PASSWORD=
+
+PORT=
+CLIENT_PORT=
+
+LOGS_PATH=./logs
+```
+
+## Как разрабатывать локально
+```bash
+npm install --global yarn # если yarn не установлен
+
+yarn initial
 ```
 Создать `.env` на основе [`.env-example`](./.env-example), заполнив все пустые поля
 ```bash
-yarn start:db # поднимет БД в докере на фоне
+yarn start:db # поднимет БД в докере в фоне
 yarn start:dev
+
 # можно начинать разработку
 ```
 
