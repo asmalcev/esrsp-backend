@@ -4,9 +4,11 @@ import {
 	Get,
 	HttpCode,
 	Post,
+	Res,
 	Session,
 	UseGuards,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { successResponse } from 'src/common-responses';
 import { WithMsg } from 'src/common-types';
 import { AuthGuard } from './auth.guard';
@@ -34,8 +36,12 @@ export class AuthController {
 
 	@UseGuards(AuthGuard)
 	@Post('/logout')
-	logout(@Session() session: Record<string, any>): WithMsg {
+	logout(
+		@Session() session: Record<string, any>,
+		@Res() res: Response,
+	): WithMsg {
 		session.destroy();
+		res.setHeader('cache-control', 'no-store, max-age=0');
 		return successResponse;
 	}
 
