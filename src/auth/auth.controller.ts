@@ -46,7 +46,7 @@ export class AuthController {
 	}
 
 	@UseGuards(AuthGuard)
-	@Get('/')
+	@Post('/check')
 	checkSession(@Session() session: Record<string, any>): WithMsg {
 		return {
 			...session.user,
